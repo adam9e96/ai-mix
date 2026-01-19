@@ -1,0 +1,1 @@
+truncate table knowledge_card,knowledge_map cascade

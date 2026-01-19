@@ -1,0 +1,176 @@
+/* 태그 그래프 모달 스타일 */
+.tag-graph-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tag-graph-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tag-graph-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tag-graph-type-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.tag-graph-type-btn {
+  padding: 8px 16px;
+  border: 2px solid #7d5cf6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #7d5cf6;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Pretendard", sans-serif;
+}
+
+.tag-graph-type-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.tag-graph-type-btn.active {
+  background: #7d5cf6;
+  color: #ffffff;
+}
+
+.tag-graph-type-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tag-graph-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.tag-graph-close {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.tag-graph-close:hover {
+  background: #f3f4f6;
+  color: #1e293b;
+}
+
+.tag-graph-content {
+  width: 100%;
+  height: calc(100vh - 80px);
+  background: #ffffff;
+  overflow: hidden;
+  position: relative;
+}
+
+.tag-graph-flow-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.tag-graph-flow-wrapper .react-flow {
+  width: 100%;
+  height: 100%;
+}
+
+.tag-graph-flow-wrapper .react-flow__viewport {
+  width: 100%;
+  height: 100%;
+}
+
+.tag-graph-loading,
+.tag-graph-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 20px;
+  color: #6b7280;
+}
+
+.tag-graph-loading p,
+.tag-graph-empty p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tag-graph-panel {
+  display: flex;
+  gap: 8px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .tag-graph-container {
+    padding: 10px;
+  }
+
+  .tag-graph-header {
+    padding: 12px 16px;
+  }
+
+  .tag-graph-title {
+    font-size: 18px;
+  }
+
+  .tag-graph-content {
+    height: calc(100vh - 100px);
+  }
+}
+
+.react-flow__viewport,
+.react-flow__pane,
+.react-flow__renderer {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}

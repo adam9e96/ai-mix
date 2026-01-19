@@ -1,0 +1,105 @@
+/* ============================
+   AI-MIX PURPLE FOOTER
+============================ */
+.aimix-footer {
+  background: #f6f3ff; /* 라이트 보라 배경 */
+  padding: 30px 0 15px;
+  border-top: 1px solid rgba(125, 92, 246, 0.25); /* 보라 하이라이트 */
+  /* margin-top: 30px; */
+}
+
+.footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 0 20px;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* 브랜드 섹션은 왼쪽에 고정 */
+.footer-section.brand {
+  flex: 0 0 auto;
+  margin-right: 40px;
+}
+
+/* Links와 Project 섹션을 오른쪽으로 살짝 밀기 */
+.footer-section.links {
+  margin-left: auto;
+}
+
+.footer-section.links,
+.footer-section.project {
+  transform: translateX(20px);
+}
+
+/* 섹션 공통 */
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* 좌측 브랜드 */
+.footer-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #7d5cf6; /* 포인트 보라 */
+  margin-bottom: 8px;
+}
+
+.footer-desc {
+  font-size: 0.85rem;
+  color: #4e3da5; /* 짙은 보라 텍스트 */
+  line-height: 1.5;
+  word-break: keep-all;
+  max-width: 300px;
+  text-align: left;
+}
+
+/* Links / Project */
+.footer-sub {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #5a3ed2;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 6px;
+}
+
+.footer-section a {
+  color: #4a3cbf;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.footer-section a:hover {
+  color: #7d5cf6;
+  text-decoration: underline;
+}
+
+/* 하단 바 */
+.footer-bottom {
+  max-width: 900px;
+  margin: 20px auto 0;
+  text-align: center;
+  padding-top: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-top: 1px solid rgba(125, 92, 246, 0.25);
+  font-size: 0.85rem;
+  color: #6c5bb8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

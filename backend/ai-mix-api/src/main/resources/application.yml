@@ -1,0 +1,177 @@
+# ============================================
+# Spring Boot 애플리케이션 설정
+# ============================================
+spring:
+  # 애플리케이션 이름
+  application:
+    name: ai-mix-api
+
+  # 프롬프트 및 설정 파일 import
+  # 외부 YAML 파일에서 프롬프트 템플릿 및 메시지 설정을 로드
+  config:
+    import:
+      - classpath:qna-prompts.yml # QnA 관련 프롬프트
+      - classpath:battle-prompts.yml # 배틀 관련 프롬프트
+      - classpath:knowledge-prompts.yml # 지식 관련 프롬프트
+      - classpath:chatgpt-config.yml # ChatGPT 설정
+      - classpath:chat-config.yml # 채팅 설정
+
+  # Redis 데이터베이스 설정
+  # Redis는 캐싱, 세션 저장, 실시간 데이터 저장 등에 사용
+  data:
+    redis:
+      host: localhost # WSL2 Redis 호스트 주소
+      port: 6379 # Redis 기본 포트
+      password: # 패스워드는 없으므로 비워두기
+  # 이메일 설정 (Gmail SMTP)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: aimix9e96@gmail.com
+    password: ${AI_MIX_GMAIL_APP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  # 가상 스레드 설정 (Java 21+)
+  # 가상 스레드를 활성화하여 동시성 성능 향상
+  threads:
+    virtual:
+      enabled: true
+
+  # 파일 업로드 설정
+  # 멀티파트 요청을 통한 파일 업로드 허용
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB # 개별 파일 최대 크기
+      max-request-size: 10MB # 전체 요청 최대 크기
+
+  # PostgreSQL 데이터소스 설정
+  # 메인 데이터베이스 연결 정보
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ai_mix
+    username: postgres
+    password: 303325
+    driver-class-name: org.postgresql.Driver
+
+    # HikariCP 커넥션 풀 설정
+    # 고성능 JDBC 커넥션 풀 라이브러리
+    hikari:
+      maximum-pool-size: 20 # 최대 커넥션 풀 크기
+      minimum-idle: 5 # 최소 유휴 커넥션 수
+      connection-timeout: 30000 # 커넥션 획득 타임아웃 (밀리초)
+      idle-timeout: 600000 # 유휴 커넥션 타임아웃 (10분)
+      max-lifetime: 1800000 # 커넥션 최대 수명 (30분)
+      connection-test-query: SELECT 1 # 커넥션 유효성 검사 쿼리
+      pool-name: AiMixHikariPool # 커넥션 풀 이름
+      auto-commit: false # 자동 커밋 비활성화 (트랜잭션 관리)
+      leak-detection-threshold: 60000 # 커넥션 누수 감지 임계값 (1분)
+
+  # JPA 설정
+  # Java Persistence API를 통한 데이터베이스 ORM 설정
+  jpa:
+    # database-platform은 Hibernate가 자동으로 감지하므로 명시 불필요
+    # database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none # 스키마 자동 생성 비활성화 (운영 환경 권장)
+    show-sql: true # SQL 쿼리 콘솔 출력 (개발 환경)
+    properties:
+      hibernate:
+        format_sql: true # SQL 포맷팅 활성화
+        type:
+          prefer_native_enum_types: true # 네이티브 ENUM 타입 사용
+        jdbc:
+          batch_size: 20 # 배치 처리 크기
+          order_inserts: true # INSERT 순서 최적화
+          order_updates: true # UPDATE 순서 최적화
+    open-in-view: false # OSIV 비활성화 (성능 최적화)
+
+  # Jackson JSON 직렬화 설정
+  # JSON 변환 시 날짜/시간 처리 방식
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false # 날짜를 ISO-8601 형식으로 직렬화
+
+# ============================================
+# 로깅 설정
+# ============================================
+# 애플리케이션 및 프레임워크 로그 레벨 설정
+logging:
+  level:
+    org.hibernate.SQL: info # Hibernate SQL 쿼리 로그
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # SQL 파라미터 바인딩 상세 로그
+    com.aimix_aimixapi: INFO # 애플리케이션 패키지 로그 레벨
+
+# ============================================
+# 파일 업로드 경로 설정
+# ============================================
+# 사용자가 업로드한 파일(아바타, 이미지 등)의 저장 경로
+file:
+  upload:
+    # 업로드 디렉토리 (절대 경로)
+    # 실제 저장 경로: {dir}/users/avatars/YYYY/MM/DD/{hash}/{UUID}.{extension}
+    # 환경 변수 사용 가능: ${AIMIX_UPLOAD_DIR:C:\dev\project\ai-mix\backend\uploads\}
+    dir: ${AIMIX_UPLOAD_DIR}
+
+# ============================================
+# JWT (JSON Web Token) 설정
+# ============================================
+# 인증 및 인가를 위한 토큰 발급 및 검증 설정
+jwt:
+  # JWT 시크릿 키 (환경 변수 우선, 없으면 기본값 사용)
+  # 프로덕션 환경에서는 반드시 환경 변수로 설정해야 함
+  secret-key: ${AIMIX_JWT_SECRET_KEY}
+
+  # AccessToken 만료 시간 (밀리초)
+  # 기본값: 1시간 (3,600,000ms) - 개발 환경에서 테스트 편의를 위해 1시간으로 설정
+  # 환경 변수 예시: AIMIX_JWT_ACCESS_EXPIRE=3600000
+  # 운영 환경 권장: 30분 (1,800,000ms)
+  # 주의: 환경 변수가 잘못 설정되어 있으면 기본값 사용
+  access-token-expiration: 3600000
+
+  # RefreshToken 만료 시간 (밀리초)
+  # 기본값: 7일 (604,800,000ms)
+  # 환경 변수 예시: AIMIX_JWT_REFRESH_EXPIRE=604800000
+  refresh-token-expiration: ${AIMIX_JWT_REFRESH_EXPIRE:604800000}
+
+  # JWT 발급자
+  # 토큰에 포함될 issuer 클레임 값
+  issuer: ${AIMIX_JWT_ISSUER:ai-mix-api}
+
+# ============================================
+# 서버 설정
+# ============================================
+# HTTP 서버 포트 및 바인딩 주소
+server:
+  port: 8081 # 서버 포트 번호
+  address: 0.0.0.0 # 모든 네트워크 인터페이스에 바인딩
+
+# ============================================
+# 애플리케이션 커스텀 설정
+# ============================================
+# 쿠키 보안 설정
+app:
+  cookie:
+    secure: false # HTTPS 전용 쿠키 여부 (false: HTTP/HTTPS 모두 허용)
+    same-site: Lax # CSRF 공격 방지를 위한 SameSite 정책 (Lax: 기본 보호 수준)
+
+# ============================================
+# API 키 암호화 설정
+# ============================================
+# 사용자별 API 키 저장 시 암호화에 사용되는 키 및 솔트
+# 프로덕션 환경에서는 반드시 환경 변수로 설정해야 함
+api-key:
+  encryption:
+    # 환경변수에서 주입 (프로덕션 필수, 개발 환경에서는 기본값 사용)
+    # 생성 방법 (선택 가능):
+    # PowerShell 스크립트: scripts/generate-encryption-keys.ps1
+    key: ${API_KEY_ENCRYPTION_KEY} # 암호화 키
+    salt: ${API_KEY_ENCRYPTION_SALT} # 암호화 솔트

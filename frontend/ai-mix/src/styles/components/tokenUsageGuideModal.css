@@ -1,0 +1,283 @@
+/* 토큰 사용량 안내 모달 */
+.token-usage-guide-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.token-usage-guide-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.token-usage-guide-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.token-usage-guide-close:hover {
+  background: #e8eafe;
+  color: #7d5cf6;
+}
+
+.token-usage-guide-header {
+  padding: 32px 32px 24px;
+  border-bottom: 1px solid #e8eafe;
+  text-align: center;
+}
+
+.token-usage-guide-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #7d5cf6 0%, #a78bfa 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: white;
+}
+
+.token-usage-guide-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.token-usage-guide-subtitle {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+}
+
+.token-usage-guide-content {
+  padding: 24px 32px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.token-usage-guide-section {
+  margin-bottom: 28px;
+}
+
+.token-usage-guide-section:last-child {
+  margin-bottom: 0;
+}
+
+.token-usage-guide-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 12px;
+}
+
+.token-usage-guide-section-title svg {
+  flex-shrink: 0;
+}
+
+.token-usage-guide-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.token-usage-guide-list li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 12px;
+  line-height: 1.7;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.token-usage-guide-list ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  font-weight: 600;
+  color: #7d5cf6;
+  font-size: 1.2rem;
+}
+
+.token-usage-guide-list li strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.token-usage-guide-note {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: #777;
+  line-height: 1.6;
+}
+
+.token-usage-guide-sublist {
+  margin-top: 8px;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.token-usage-guide-sublist li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.token-usage-guide-sublist li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #7d5cf6;
+  font-weight: 600;
+}
+
+.token-usage-guide-link {
+  color: #7d5cf6;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
+}
+
+.token-usage-guide-link:hover {
+  color: #6d4cdb;
+  text-decoration: underline;
+}
+
+.token-usage-guide-link svg {
+  flex-shrink: 0;
+}
+
+.token-usage-guide-footer {
+  padding: 20px 32px 32px;
+  border-top: 1px solid #e8eafe;
+  display: flex;
+  justify-content: center;
+}
+
+.token-usage-guide-btn {
+  padding: 12px 32px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.token-usage-guide-btn-primary {
+  background: linear-gradient(135deg, #7d5cf6 0%, #a78bfa 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(125, 92, 246, 0.3);
+}
+
+.token-usage-guide-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(125, 92, 246, 0.4);
+}
+
+.token-usage-guide-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* 다크모드 지원 */
+@media (prefers-color-scheme: dark) {
+  .token-usage-guide-modal {
+    background: #1f1f1f;
+    color: #e5e5e5;
+  }
+
+  .token-usage-guide-title {
+    color: #e5e5e5;
+  }
+
+  .token-usage-guide-subtitle {
+    color: #a0a0a0;
+  }
+
+  .token-usage-guide-section-title {
+    color: #e5e5e5;
+  }
+
+  .token-usage-guide-list li {
+    color: #c0c0c0;
+  }
+
+  .token-usage-guide-list li strong {
+    color: #e5e5e5;
+  }
+
+  .token-usage-guide-close {
+    background: #2a2a2a;
+    color: #a0a0a0;
+  }
+
+  .token-usage-guide-close:hover {
+    background: #3a3a3a;
+    color: #7d5cf6;
+  }
+}
+
+/* 모바일 반응형 */
+@media (max-width: 640px) {
+  .token-usage-guide-modal {
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+    max-height: 95vh;
+  }
+
+  .token-usage-guide-header {
+    padding: 24px 20px 20px;
+  }
+
+  .token-usage-guide-content {
+    padding: 20px;
+  }
+
+  .token-usage-guide-footer {
+    padding: 16px 20px 20px;
+  }
+
+  .token-usage-guide-title {
+    font-size: 1.3rem;
+  }
+}
+

@@ -1,0 +1,122 @@
+/* ============================
+   Pretendard 폰트 전체 적용
+   (404 절대 안 나는 공식 CDN)
+============================ */
+
+/* 공식 Static 버전 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css");
+
+/* 모든 요소 초기화 및 폰트 통일 */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Pretendard", sans-serif !important;
+  box-sizing: border-box;
+}
+
+/* 아이콘 스타일 */
+.wiki-animate {
+  animation: wikiBook 0.6s ease-in-out;
+}
+
+@keyframes wikiBook {
+  0% {
+    transform: scale(1) rotate(0) translateY(0);
+  }
+  20% {
+    transform: scale(1.04) rotate(-8deg) translateY(-2px);
+  }
+  50% {
+    transform: scale(1.04) rotate(8deg) translateY(-2px);
+  }
+  80% {
+    transform: scale(1.04) rotate(-8deg) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) rotate(0) translateY(0);
+  }
+}
+
+.qna-rotate {
+  animation: qnaRotate 0.5s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes qnaRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Wiki */
+.wiki-animate {
+  animation: wikiBook 0.6s ease-in-out;
+}
+@keyframes wikiBook {
+  0% {
+    transform: scale(1) rotate(0) translateY(0);
+  }
+  20% {
+    transform: scale(1.04) rotate(-8deg) translateY(-2px);
+  }
+  50% {
+    transform: scale(1.04) rotate(8deg) translateY(-2px);
+  }
+  80% {
+    transform: scale(1.04) rotate(-8deg) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) rotate(0) translateY(0);
+  }
+}
+
+/* QNA */
+.qna-rotate {
+  animation: qnaRotate 0.5s ease-in-out;
+  transform-origin: center;
+}
+@keyframes qnaRotate {
+  0% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+/* Shield */
+.shield-animate .shield-check {
+  animation: checkMark 0.5s ease-out backwards;
+}
+@keyframes checkMark {
+  0% {
+    stroke-dasharray: 9;
+    stroke-dashoffset: 9;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}

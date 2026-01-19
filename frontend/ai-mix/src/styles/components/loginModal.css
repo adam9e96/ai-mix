@@ -1,0 +1,86 @@
+/* ====================================
+   Login Modal 공통 영역
+==================================== */
+
+.login-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.login-modal-box {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+  position: relative;
+  margin: 20px;
+}
+
+/* ====================================
+   X 버튼 (macOS 스타일)
+==================================== */
+
+.login-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 999;
+}
+
+.mac-close {
+  width: 32px;
+  height: 32px;
+  background: rgba(108, 99, 255, 0.12);
+  border-radius: 50%;
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4f46e5;
+  cursor: pointer;
+  transition: 0.2s ease;
+  backdrop-filter: blur(5px);
+}
+
+.mac-close:hover {
+  background: rgba(108, 99, 255, 0.25);
+  border-color: rgba(108, 99, 255, 0.45);
+  color: #ffffff;
+}
+
+/* ====================================
+   헤더 영역
+==================================== */
+
+.login-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.login-header .auth-title {
+  margin-bottom: 0;
+}
+
+.login-subtitle {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+/* ====================================
+   버튼 비활성화 상태
+==================================== */
+
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

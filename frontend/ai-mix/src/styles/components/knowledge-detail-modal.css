@@ -1,0 +1,158 @@
+/* 지식카드 상세 모달 스타일 */
+
+.knowledge-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.knowledge-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin: auto;
+}
+
+.knowledge-modal-close {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.95);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
+  color: #7d5cf6;
+}
+
+.knowledge-modal-close:hover {
+  background: rgba(125, 92, 246, 0.1);
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(125, 92, 246, 0.25);
+  color: #5f4fff;
+}
+
+/* 모달 내부 카드 스타일 조정 */
+.knowledge-modal-container .knowledge-flip-card {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+/* 스크롤바 스타일 */
+.knowledge-modal-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.knowledge-modal-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.knowledge-modal-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.knowledge-modal-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* 반응형 */
+/* 큰 데스크톱 */
+@media (min-width: 1920px) {
+  .knowledge-modal-backdrop {
+    padding: 30px;
+  }
+
+  .knowledge-modal-container {
+    max-width: 520px;
+    max-height: 85vh;
+  }
+}
+
+/* 중간 데스크톱 */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .knowledge-modal-backdrop {
+    padding: 25px;
+  }
+
+  .knowledge-modal-container {
+    max-width: 500px;
+    max-height: 88vh;
+  }
+}
+
+/* 작은 데스크톱 */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .knowledge-modal-backdrop {
+    padding: 20px;
+  }
+
+  .knowledge-modal-container {
+    max-width: 480px;
+    max-height: 90vh;
+  }
+}
+
+/* 태블릿 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .knowledge-modal-backdrop {
+    padding: 15px;
+  }
+
+  .knowledge-modal-container {
+    max-width: 450px;
+    max-height: 92vh;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .knowledge-modal-backdrop {
+    padding: 10px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .knowledge-modal-container {
+    max-width: 100%;
+    max-height: calc(100vh - 20px);
+  }
+}
+
+/* 작은 모바일 */
+@media (max-width: 480px) {
+  .knowledge-modal-backdrop {
+    padding: 8px;
+    padding-top: 15px;
+  }
+
+  .knowledge-modal-container {
+    max-height: calc(100vh - 16px);
+  }
+}
+

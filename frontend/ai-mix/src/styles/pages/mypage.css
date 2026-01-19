@@ -1,0 +1,929 @@
+/* =============================
+      AI-MIX MYPAGE STYLE
+   (home.css 색감 완전 동일)
+============================= */
+
+.mypage-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: grid;
+  gap: 30px;
+}
+
+/* =============================
+      프로필 이름 행
+============================= */
+.profile-name-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 공통 카드 스타일 (home 스타일 기반) */
+.mypage-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0px 4px 12px rgba(125, 92, 246, 0.12);
+  border: 1px solid #e8eafe;
+}
+
+/* =============================
+        프로필 카드
+============================= */
+.profile-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0px 4px 12px rgba(125, 92, 246, 0.12);
+  border: 1px solid #e8eafe;
+  position: relative;
+}
+
+.profile-top {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.profile-avatar {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #c9ccff;
+  background: #e8eafe;
+}
+
+.profile-placeholder {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  background: #e8eafe;
+  color: #3f3fbf;
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.edit-profile-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 5px 12px;
+  background: linear-gradient(135deg, #7d5cf6 0%, #5b3fd9 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0px 2px 8px rgba(125, 92, 246, 0.2);
+  white-space: nowrap;
+}
+
+.edit-profile-btn:hover {
+  background: linear-gradient(135deg, #6d4ce6 0%, #4b2fc9 100%);
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 12px rgba(125, 92, 246, 0.3);
+}
+
+.edit-profile-btn:active {
+  transform: translateY(0);
+}
+
+.profile-email {
+  margin-top: 4px;
+  margin-bottom: 8px;
+  display: inline-block;
+  padding: 3px 10px;
+  background: #d8dbfd;
+  color: #3f3fbf;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.profile-bio {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: #f8f9ff;
+  border: 1px solid #e8eafe;
+  border-radius: 12px;
+}
+
+.profile-bio-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e8eafe;
+}
+
+.profile-bio-header svg {
+  color: #7d5cf6;
+  flex-shrink: 0;
+}
+
+.profile-bio-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #3f3fbf;
+  letter-spacing: 0.3px;
+}
+
+.profile-bio-text {
+  margin: 0;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.profile-dates {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e8eafe;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 12px;
+}
+
+.profile-date-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f8f9ff;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #555;
+  transition: 0.2s ease;
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-date-item:hover {
+  background: #e8eafe;
+  transform: translateX(4px);
+}
+
+.profile-date-item svg {
+  color: #7d5cf6;
+  flex-shrink: 0;
+}
+
+/* =============================
+        활동 통계
+============================= */
+.stats-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0px 4px 12px rgba(125, 92, 246, 0.12);
+  border: 1px solid #e8eafe;
+}
+
+.stats-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.stats-grid {
+  display: flex;
+  gap: 20px;
+}
+
+/* 클릭 가능한 stat-box */
+.stat-box-clickable {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.stat-box-clickable:hover {
+  transform: translateY(-4px);
+  background: #d8dbfd;
+}
+
+.stat-box {
+  flex: 1;
+  padding: 20px;
+  background: #e8eafe;
+  border: 1px solid #d8dbfd;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0px 4px 12px rgba(125, 92, 246, 0.1);
+}
+
+.stat-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #3f3fbf;
+}
+
+.stat-label {
+  margin-top: 6px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* =============================
+        설정 카드
+============================= */
+.settings-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0px 4px 12px rgba(125, 92, 246, 0.12);
+  border: 1px solid #e8eafe;
+}
+
+.settings-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-item > span:first-child {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.setting-label {
+  font-size: 1rem;
+  color: #555;
+}
+
+.setting-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #3f3fbf;
+}
+
+/* =============================
+      배틀 전적 카드 (New)
+============================= */
+
+.battle-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0px 4px 14px rgba(125, 92, 246, 0.15);
+  border: 1px solid #e8eafe;
+}
+
+.battle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battle-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.battle-summary {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* 로딩 / 에러 */
+.battle-loading,
+.battle-error {
+  margin-top: 15px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* 리스트 전체 */
+.battle-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 개별 전적 카드 */
+.battle-item {
+  padding: 16px;
+  background: #fff;
+  border-radius: 14px;
+  border-left: 6px solid #c9ccff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  transition: 0.2s;
+}
+
+.battle-item:hover {
+  transform: translateY(-3px);
+}
+
+/* 승패에 따라 색 변경 */
+.result-win {
+  border-left-color: #4caf50;
+}
+.result-lose {
+  border-left-color: #e53935;
+}
+.result-draw {
+  border-left-color: #ff9800;
+}
+.result-progress {
+  border-left-color: #9e9e9e;
+}
+
+/* 내부 구성 */
+.battle-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battle-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.battle-level {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #3f3fbf;
+}
+
+.battle-result {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.battle-center {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.battle-row {
+  display: flex;
+  gap: 14px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.battle-row.sub {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.battle-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.battle-date {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.battle-source {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+/* =============================
+      GPT 토큰 사용량 그래프
+============================= */
+.token-usage-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0px 4px 12px rgba(125, 92, 246, 0.12);
+  border: 1px solid #e8eafe;
+}
+
+.token-usage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.token-usage-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.token-usage-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.token-usage-info-btn {
+  background: #f8f9ff;
+  border: 1px solid #e8eafe;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #7d5cf6;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.token-usage-info-btn:hover {
+  background: #e8eafe;
+  border-color: #c9ccff;
+  transform: scale(1.1);
+}
+
+.token-usage-info-btn:active {
+  transform: scale(0.95);
+}
+
+.token-summary {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.token-summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.token-summary-label {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.token-summary-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #7d5cf6;
+}
+
+.token-api-key-filter {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.api-key-filter-btn {
+  padding: 8px 16px;
+  background: #f8f9ff;
+  border: 1px solid #e8eafe;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.api-key-filter-btn:hover {
+  background: #e8eafe;
+  border-color: #c9ccff;
+}
+
+.api-key-filter-btn.active {
+  background: linear-gradient(135deg, #7d5cf6 0%, #5b3fd9 100%);
+  color: #ffffff;
+  border-color: #7d5cf6;
+  box-shadow: 0px 2px 8px rgba(125, 92, 246, 0.2);
+}
+
+.token-period-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.period-btn {
+  padding: 8px 16px;
+  background: #f8f9ff;
+  border: 1px solid #e8eafe;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.period-btn:hover {
+  background: #e8eafe;
+  border-color: #c9ccff;
+}
+
+.period-btn.active {
+  background: linear-gradient(135deg, #7d5cf6 0%, #5b3fd9 100%);
+  color: #ffffff;
+  border-color: #7d5cf6;
+  box-shadow: 0px 2px 8px rgba(125, 92, 246, 0.2);
+}
+
+.token-chart-container {
+  min-height: 400px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* 토큰 사용량 툴팁 */
+.token-usage-tooltip {
+  background: #ffffff;
+  border: 1px solid #e8eafe;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  min-width: 280px;
+  max-width: 400px;
+}
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e8eafe;
+}
+
+.tooltip-date {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.tooltip-total {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #7d5cf6;
+}
+
+.tooltip-section {
+  margin-bottom: 12px;
+}
+
+.tooltip-section:last-child {
+  margin-bottom: 0;
+}
+
+.tooltip-section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 8px;
+  padding: 4px 0;
+}
+
+.tooltip-section-user .tooltip-section-title {
+  color: #4CAF50;
+}
+
+.tooltip-section-shared .tooltip-section-title {
+  color: #2196F3;
+}
+
+.tooltip-usage-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tooltip-usage-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  padding: 4px 0;
+}
+
+.tooltip-usage-item.tooltip-usage-total {
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid #e8eafe;
+  font-weight: 700;
+}
+
+.tooltip-label {
+  color: #666;
+  font-weight: 500;
+}
+
+.tooltip-value {
+  color: #333;
+  font-weight: 600;
+}
+
+.tooltip-usage-total .tooltip-label {
+  color: #7d5cf6;
+  font-weight: 700;
+}
+
+.tooltip-usage-total .tooltip-value {
+  color: #7d5cf6;
+  font-weight: 700;
+}
+
+.token-chart-loading,
+.token-chart-empty {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.token-chart-empty {
+  background: #f8f9ff;
+  border-radius: 12px;
+  border: 1px dashed #e8eafe;
+}
+
+/* =============================
+      GPT API 키 설정 카드
+============================= */
+.api-key-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0px 4px 12px rgba(125, 92, 246, 0.12);
+  border: 1px solid #e8eafe;
+}
+
+.api-key-header {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.api-key-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.api-key-info-btn {
+  background: #f8f9ff;
+  border: 1px solid #e8eafe;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #7d5cf6;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.api-key-info-btn:hover {
+  background: #e8eafe;
+  border-color: #7d5cf6;
+  transform: scale(1.05);
+}
+
+.api-key-info-btn:active {
+  transform: scale(0.95);
+}
+
+.api-key-title svg {
+  color: #7d5cf6;
+  flex-shrink: 0;
+}
+
+.api-key-title h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.api-key-description {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: #f8f9ff;
+  border-radius: 12px;
+  border-left: 4px solid #7d5cf6;
+}
+
+.api-key-description p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.api-key-model-info {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  background: #e8eafe;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.api-key-model-info strong {
+  color: #7d5cf6;
+  font-weight: 600;
+}
+
+.api-key-input-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.api-key-input-group {
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.api-key-input {
+  width: 100%;
+  padding: 12px 45px 12px 16px;
+  border: 2px solid #e8eafe;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #333;
+  background: #ffffff;
+  transition: 0.2s ease;
+  font-family: 'Courier New', monospace;
+}
+
+.api-key-input:focus {
+  outline: none;
+  border-color: #7d5cf6;
+  box-shadow: 0px 0px 0px 3px rgba(125, 92, 246, 0.1);
+}
+
+.api-key-input:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.api-key-input::placeholder {
+  color: #999;
+}
+
+.api-key-toggle-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: 0.2s ease;
+  border-radius: 4px;
+}
+
+.api-key-toggle-btn:hover {
+  color: #7d5cf6;
+  background: #f8f9ff;
+}
+
+.api-key-save-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #7d5cf6 0%, #5b3fd9 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0px 2px 8px rgba(125, 92, 246, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.api-key-save-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #6d4ce6 0%, #4b2fc9 100%);
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 12px rgba(125, 92, 246, 0.3);
+}
+
+.api-key-save-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.api-key-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.api-key-status {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: #f0f7ff;
+  border: 1px solid #c9e6ff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.api-key-status-label {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.api-key-status-value {
+  font-size: 0.9rem;
+  color: #3f3fbf;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #e8eafe;
+}
+
+.api-key-remove-btn {
+  margin-left: auto;
+  padding: 6px 14px;
+  background: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.api-key-remove-btn:hover:not(:disabled) {
+  background: #ffcdd2;
+  border-color: #ef9a9a;
+  transform: translateY(-1px);
+}
+
+.api-key-remove-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}

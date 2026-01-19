@@ -1,0 +1,654 @@
+/* 지식카드 페이지 임시 스타일 */
+
+.knowledge-page {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 200px);
+}
+
+/* 사이드바 */
+.knowledge-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.knowledge-category {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.knowledge-category li {
+  padding: 0.75rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.knowledge-category li:hover {
+  background: #e9ecef;
+}
+
+/* 랭킹 섹션 */
+.knowledge-ranking-section {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.ranking-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.ranking-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  bottom: -2px;
+  margin-bottom: -2px;
+}
+
+.ranking-tab:hover {
+  color: #6c63ff;
+  background: rgba(108, 99, 255, 0.05);
+}
+
+.ranking-tab.active {
+  color: #6c63ff;
+  border-bottom-color: #6c63ff;
+  background: rgba(108, 99, 255, 0.05);
+}
+
+.ranking-tab svg {
+  flex-shrink: 0;
+}
+
+.ranking-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ranking-item:hover {
+  background: #f9fafb;
+  border-color: #6c63ff;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.1);
+}
+
+.ranking-rank {
+  flex-shrink: 0;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: white;
+}
+
+.rank-badge.rank-1 {
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.rank-badge.rank-2 {
+  background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.3);
+}
+
+.rank-badge.rank-3 {
+  background: linear-gradient(135deg, #cd7f32 0%, #e6a85c 100%);
+  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.3);
+}
+
+.rank-number {
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.ranking-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.ranking-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.ranking-count {
+  font-size: 0.8rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ranking-count svg {
+  color: #7d5cf6;
+  flex-shrink: 0;
+}
+
+.ranking-empty {
+  text-align: center;
+  padding: 2rem;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+/* 메인 컨텐츠 */
+.knowledge-main {
+  flex: 1;
+}
+
+/* 헤더 */
+.knowledge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.knowledge-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.knowledge-title-link {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.knowledge-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: #3f3fbf;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+
+.knowledge-title-link:hover .knowledge-title {
+  color: #2d2da8;
+}
+
+.knowledge-info-icon {
+  background: transparent;
+  border: none;
+  color: #7d5cf6;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  opacity: 0.7;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.knowledge-info-icon:hover {
+  opacity: 1;
+  background: rgba(125, 92, 246, 0.1);
+  transform: scale(1.1);
+}
+
+/* 지식카드 안내 툴팁 */
+.knowledge-info-tooltip {
+  max-width: 320px !important;
+  background: linear-gradient(135deg, #7d5cf6 0%, #9a8aff 100%) !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  padding: 12px 16px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(125, 92, 246, 0.4),
+    0 4px 12px rgba(125, 92, 246, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  z-index: 10000 !important;
+  word-break: keep-all !important;
+  text-align: left !important;
+  opacity: 1 !important;
+  backdrop-filter: blur(0) !important;
+}
+
+.knowledge-info-tooltip::before {
+  background: linear-gradient(135deg, #7d5cf6 0%, #9a8aff 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.knowledge-summary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.knowledge-summary strong {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* 탭 네비게이션 */
+.knowledge-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0;
+}
+
+.knowledge-tab {
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  bottom: -2px;
+  margin-bottom: -2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.knowledge-tab:hover {
+  color: #6c63ff;
+  background: rgba(108, 99, 255, 0.05);
+}
+
+.knowledge-tab.active {
+  color: #6c63ff;
+  border-bottom-color: #6c63ff;
+  background: linear-gradient(
+    135deg,
+    rgba(108, 99, 255, 0.1) 0%,
+    rgba(108, 99, 255, 0.05) 100%
+  );
+  font-weight: 700;
+}
+
+.knowledge-tab.active svg {
+  color: #6c63ff;
+}
+
+.knowledge-tab-content {
+  min-height: 400px;
+}
+
+/* 섹션 */
+.knowledge-section {
+  margin-bottom: 3rem;
+}
+
+.knowledge-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* 카드 리스트 */
+.knowledge-card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.knowledge-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.knowledge-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--card-accent, #6c63ff);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.knowledge-card:hover::before {
+  transform: scaleX(1);
+}
+
+.knowledge-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e0;
+}
+
+/* 카드 헤더 (이미지 영역) */
+.knowledge-card-header {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  background: #f7fafc;
+}
+
+.knowledge-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.knowledge-card:hover .knowledge-card-image {
+  transform: scale(1.05);
+}
+
+.knowledge-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+/* 카드 본문 */
+.knowledge-card-body {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.knowledge-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #1a202c;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+
+.knowledge-card-description {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 통계 배지 */
+.knowledge-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.knowledge-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--card-light, #f7fafc);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.knowledge-card:hover .knowledge-card-badge {
+  background: var(--card-light, #f7fafc);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e0;
+  color: var(--card-accent, #2d3748);
+}
+
+.badge-icon {
+  font-size: 0.9rem;
+}
+
+/* 출처 정보 */
+.knowledge-card-source {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.8rem;
+  color: #718096;
+  font-weight: 500;
+}
+
+.source-icon {
+  font-size: 1rem;
+}
+
+.knowledge-card:hover .knowledge-card-source {
+  color: #4a5568;
+}
+
+/* 페이지네이션 */
+.knowledge-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.knowledge-pagination-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.knowledge-pagination-btn:hover:not(:disabled) {
+  background: #f7fafc;
+  border-color: #6c63ff;
+  color: #6c63ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(108, 99, 255, 0.15);
+}
+
+.knowledge-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #f7fafc;
+}
+
+.knowledge-pagination-info {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #4a5568;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .knowledge-page {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .knowledge-sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .knowledge-card-list {
+    grid-template-columns: 1fr;
+  }
+
+  .knowledge-pagination {
+    gap: 0.75rem;
+  }
+
+  .knowledge-pagination-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .knowledge-pagination-info {
+    font-size: 0.875rem;
+    min-width: 50px;
+  }
+}
+
+/* 빈 상태 메시지 스타일 */
+.knowledge-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+  border-radius: 16px;
+  border: 2px dashed #d1d5ff;
+  margin: 24px 0;
+}
+
+.knowledge-empty-state-icon {
+  color: #9ca3ff;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.knowledge-empty-state-text {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+
+.knowledge-empty-state-subtext {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0 0 20px 0;
+}
+
+.knowledge-empty-state-button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #6c63ff 0%, #5a52e5 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.3);
+}
+
+.knowledge-empty-state-button:hover {
+  background: linear-gradient(135deg, #5a52e5 0%, #4a42d5 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.4);
+}

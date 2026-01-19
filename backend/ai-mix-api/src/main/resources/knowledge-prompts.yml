@@ -1,0 +1,36 @@
+# Knowledge Card 서비스 프롬프트 설정
+knowledge:
+  gpt-prompt:
+    # 시스템 메시지 (카드 생성 지침)
+    system-message: |
+      당신은 대화 내용을 분석하여 개념 카드를 생성하는 전문가입니다.
+      다음 대화 내용을 분석하여 JSON 형식으로 개념 카드를 생성해주세요.
+      
+      응답 형식:
+      {
+        "title": "개념 제목",
+        "oneLineDefinition": "한 줄 정의 (50자 이내)",
+        "corePoints": ["핵심 포인트 1", "핵심 포인트 2", "핵심 포인트 3"],
+        "commonMistakes": ["자주 틀리는 오해 1", "자주 틀리는 오해 2"]
+      }
+      
+      주의사항:
+      - title은 명확하고 간결하게 작성
+      - oneLineDefinition은 50자 이내로 핵심만 설명
+      - corePoints는 1-3개 정도로 핵심 내용만 추출
+      - commonMistakes는 대화에서 언급된 오해나 혼동이 있을 경우만 포함
+      - JSON 형식만 응답하고 다른 설명은 포함하지 마세요
+    
+    # 사용자 메시지 템플릿
+    user-message-template: "다음 %s을 분석하여 개념 카드를 생성해주세요:\n\n%s"
+    
+    # 콘텐츠 라벨
+    content-label:
+      chat: "대화 내용"
+      qna: "QnA 질문과 답변"
+    
+    # 기본값
+    default-values:
+      title: "제목 없음"
+      one-line-definition: "설명 없음"
+      core-point: "핵심 포인트"

@@ -1,0 +1,312 @@
+/* ===========================================
+   AI-MIX Battle Detail FINAL
+=========================================== */
+
+.battle-detail {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(138, 99, 255, 0.15);
+}
+
+/* ============================
+          헤더
+  ============================ */
+.bd-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bd-back {
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: #7d5cf6;
+  font-weight: 600;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: inherit;
+}
+
+.bd-back:hover {
+  text-decoration: underline;
+}
+
+/* ============================
+          상단 요약
+  ============================ */
+.battle-summary {
+  background: #ffffff;
+  border: 1px solid #e3e6f0;
+  border-radius: 18px;
+  padding: 26px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 결과 배지 */
+.battle-result-badge {
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 6px 16px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.battle-result-badge.win {
+  background: #34a853;
+}
+
+.battle-result-badge.lose {
+  background: #e53935;
+}
+
+.battle-result-badge.draw {
+  background: #fb8c00;
+}
+
+.battle-result-badge.in_progress {
+  background: #6a70ff;
+}
+
+/* 재도전 버튼 */
+.bd-resume-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #ffffff;
+  border: 2px solid #7d5cf6;
+  border-radius: 12px;
+  color: #7d5cf6;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(125, 92, 246, 0.15);
+}
+
+.bd-resume-btn:hover {
+  background: #7d5cf6;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(125, 92, 246, 0.3);
+}
+
+.bd-resume-btn:active {
+  transform: translateY(0);
+}
+
+.bd-resume-btn svg {
+  flex-shrink: 0;
+}
+
+/* 요약 통계 */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  font-size: 0.9rem;
+  color: #2b2f55;
+}
+
+.summary-grid b {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+/* ============================
+          문제 리스트
+  ============================ */
+.battle-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* 문제 카드 */
+.question-card {
+  border-radius: 16px;
+  padding: 22px 22px 24px;
+  border: 1px solid #dcdfff;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 문제 결과별 카드 톤 */
+.question-card.correct {
+  background: #ffffff;
+  border-left: 6px solid #34a853;
+  border-color: #c8e6c9;
+}
+
+.question-card.wrong {
+  background: #ffffff;
+  border-left: 6px solid #e53935;
+  border-color: #ffcdd2;
+}
+
+/* 문제 헤더 */
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.order {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #2b2f55;
+}
+
+.difficulty {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #eef0ff;
+  color: #4b5cff;
+}
+
+/* 문제 텍스트 */
+.question-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2b2f55;
+  margin-bottom: 14px;
+  line-height: 1.45;
+}
+
+/* ============================
+          선택지
+  ============================ */
+.choices {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.choices li {
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #2b2f55;
+}
+
+/* 정답 */
+.choices li.answer {
+  background: #c8e6c9;
+  border: 2px solid #4caf50;
+  font-weight: 700;
+  color: #1b5e20;
+}
+
+/* 유저가 고른 오답 */
+.choices li.user-wrong {
+  background: #ffcdd2;
+  border: 2px solid #e53935;
+  font-weight: 700;
+  color: #b71c1c;
+}
+
+/* 유저 정답 */
+.choices li.user-correct {
+  background: #a5d6a7;
+  border: 2px solid #2e7d32;
+  font-weight: 800;
+  color: #1b5e20;
+}
+
+/* ============================
+          피드백
+  ============================ */
+.feedback {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.85rem;
+  color: #2b2f55;
+  line-height: 1.5;
+}
+
+/* ============================
+          AI 평가
+  ============================ */
+.battle-evaluation {
+  background: #ffffff;
+  border: 1px solid #e3e6f0;
+  border-radius: 18px;
+  padding: 26px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.battle-evaluation h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2b2f55;
+  margin-bottom: 12px;
+}
+
+.battle-evaluation .grade {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #4b5cff;
+  margin-bottom: 6px;
+}
+
+.battle-evaluation p {
+  font-size: 0.9rem;
+  color: #2b2f55;
+  margin-bottom: 12px;
+}
+
+.battle-evaluation ul {
+  padding-left: 18px;
+  color: #2b2f55;
+  font-size: 0.85rem;
+}
+
+.battle-evaluation li {
+  margin-bottom: 6px;
+}
+
+/* ============================
+          로딩
+  ============================ */
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 0.95rem;
+  color: #6a6f9d;
+}
+
+/* ============================
+          반응형
+  ============================ */
+@media (max-width: 768px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .battle-detail {
+    padding: 24px 16px 40px;
+  }
+}

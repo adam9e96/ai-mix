@@ -1,0 +1,16 @@
+# ChatGPT API 설정
+chatgpt:
+  # OpenAI API 키 (환경변수에서 주입)
+  api-key: ${OPENAI_API_KEY}
+  # 기본 모델명
+  default-model: gpt-4o-mini
+  # 기본 Temperature (0.0 ~ 2.0)
+  default-temperature: 1.0
+  # 기본 최대 토큰 수
+  default-max-tokens: 1000
+  # 타임아웃 설정 (초)
+  timeout:
+    # 연결 타임아웃 (초)
+    connect: 30
+    # 읽기 타임아웃 (초)
+    read: 60

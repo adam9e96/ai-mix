@@ -1,0 +1,670 @@
+/* ===========================================
+   AI-MIX Battle History FINAL
+=========================================== */
+
+/* ============================
+      전체 레이아웃
+============================ */
+.bh-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 36px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(138, 99, 255, 0.15);
+}
+
+/* ============================
+        헤더
+============================ */
+.bh-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bh-back {
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: #7d5cf6;
+  font-weight: 600;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: inherit;
+}
+
+.bh-back:hover {
+  text-decoration: underline;
+}
+
+/* ============================
+        요약 영역
+============================ */
+.bh-summary {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e3e6f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.bh-box {
+  text-align: center;
+  padding: 12px 6px;
+  border-radius: 12px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.bh-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bh-box.active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(125, 92, 246, 0.3);
+  border: 2px solid #7d5cf6;
+}
+
+.bh-box .val {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #2b2f55;
+}
+
+.bh-box .label {
+  font-size: 0.75rem;
+  color: #6a6f9d;
+  margin-top: 4px;
+  display: block;
+}
+
+/* 결과별 요약 색 */
+.bh-box.win .val {
+  color: #2e7d32;
+}
+
+.bh-box.win.active {
+  border-color: #34a853;
+  box-shadow: 0 4px 16px rgba(52, 168, 83, 0.3);
+}
+
+.bh-box.draw .val {
+  color: #ef6c00;
+}
+
+.bh-box.draw.active {
+  border-color: #fb8c00;
+  box-shadow: 0 4px 16px rgba(251, 140, 0, 0.3);
+}
+
+.bh-box.lose .val {
+  color: #c62828;
+}
+
+.bh-box.lose.active {
+  border-color: #e53935;
+  box-shadow: 0 4px 16px rgba(229, 57, 53, 0.3);
+}
+
+.bh-box.progress .val {
+  color: #6a70ff; /* 진행 중 */
+}
+
+.bh-box.progress.active {
+  border-color: #7d5cf6;
+  box-shadow: 0 4px 16px rgba(125, 92, 246, 0.3);
+}
+
+/* ============================
+        날짜 필터
+============================ */
+.bh-date-filter {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e3e6f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.bh-date-filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 16px;
+}
+
+.bh-date-filter-header:hover {
+  background: #f9fafb;
+}
+
+.bh-date-filter-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2b2f55;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bh-date-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background: #f3f0ff;
+  border: 1px solid #dcd7ff;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7d5cf6;
+}
+
+.bh-date-filter-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: #ffffff;
+  border: 1px solid #e3e6f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  max-height: 400px;
+  overflow-y: auto;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bh-date-filter-section {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.bh-date-filter-section:last-child {
+  border-bottom: none;
+}
+
+.bh-date-filter-section-title {
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6a6f9d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bh-date-filter-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.bh-date-filter-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #2b2f55;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.bh-date-filter-option:hover {
+  background: #f9fafb;
+}
+
+.bh-date-filter-option.active {
+  background: #f3f0ff;
+  color: #7d5cf6;
+  font-weight: 600;
+}
+
+.bh-date-filter-option .check {
+  color: #7d5cf6;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.bh-date-filter-clear {
+  padding: 12px 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.bh-date-filter-clear-btn {
+  width: 100%;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #6a6f9d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bh-date-filter-clear-btn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #2b2f55;
+}
+
+/* ============================
+        리스트
+============================ */
+.bh-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 날짜 그룹 */
+.bh-date-group {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bh-date-header {
+  padding: 8px 16px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bh-date-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2b2f55;
+}
+
+/* ============================
+        배틀 카드
+============================ */
+.bh-match-card {
+  margin-bottom: 20px;
+  border-radius: 14px;
+  border: 1px solid #dcdfff;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.bh-match-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(90, 96, 255, 0.18);
+}
+
+/* 카드 배경 (승패에 맞춰 내부색 강조) */
+.bh-match-card.win {
+  background: #e8f5e9;
+  border-left: 6px solid #34a853;
+  border-color: #c8e6c9;
+}
+
+.bh-match-card.lose {
+  background: #ffebee;
+  border-left: 6px solid #e53935;
+  border-color: #ffcdd2;
+}
+
+.bh-match-card.draw {
+  background: #fff3e0;
+  border-left: 6px solid #fb8c00;
+  border-color: #ffe0b2;
+}
+
+.bh-match-card.in_progress {
+  background: #f3f0ff;
+  border-left: 6px solid #7d5cf6;
+  border-color: #dcd7ff;
+}
+
+/* ============================
+        카드 헤더
+============================ */
+.bh-match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* 승패에 맞춰 헤더 배경색 강조 */
+.bh-match-card.win .bh-match-header {
+  background: #c8e6c9;
+  border-bottom-color: #a5d6a7;
+}
+
+.bh-match-card.lose .bh-match-header {
+  background: #ffcdd2;
+  border-bottom-color: #ef9a9a;
+}
+
+.bh-match-card.draw .bh-match-header {
+  background: #ffe0b2;
+  border-bottom-color: #ffcc80;
+}
+
+.bh-match-card.in_progress .bh-match-header {
+  background: #e8e0ff;
+  border-bottom-color: #d4c5ff;
+}
+
+.bh-match-mode {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #2b2f55;
+}
+
+.bh-match-meta {
+  font-size: 0.75rem;
+  color: #6a6f9d;
+}
+
+/* ============================
+        카드 본문
+============================ */
+.bh-match-content {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 22px;
+}
+
+/* 좌측 */
+.bh-match-left {
+  min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.bh-level-badge {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px 14px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bh-level-icon {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #6a6f9d;
+}
+
+.bh-level-number {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #2b2f55;
+}
+
+/* 결과 배지 */
+.bh-result-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 16px;
+  color: #fff;
+}
+
+.bh-match-card.win .bh-result-badge {
+  background: #34a853;
+}
+
+.bh-match-card.lose .bh-result-badge {
+  background: #e53935;
+}
+
+.bh-match-card.draw .bh-result-badge {
+  background: #fb8c00;
+}
+
+.bh-match-card.in_progress .bh-result-badge {
+  background: #7d5cf6;
+}
+
+/* 재대결 버튼 */
+.bh-resume-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #ffffff;
+  border: 1px solid #7d5cf6;
+  border-radius: 12px;
+  color: #7d5cf6;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bh-resume-btn:hover {
+  background: #7d5cf6;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(125, 92, 246, 0.3);
+}
+
+.bh-resume-btn:active {
+  transform: translateY(0);
+}
+
+/* ============================
+        중앙 통계
+============================ */
+.bh-match-stats {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.bh-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bh-stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.bh-stat-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2b2f55;
+}
+
+.bh-stat-label {
+  font-size: 0.7rem;
+  color: #6a6f9d;
+}
+
+/* ============================
+        로딩
+============================ */
+.bh-loading {
+  text-align: center;
+  padding: 36px;
+  font-size: 0.9rem;
+  color: #6a6f9d;
+}
+
+/* ============================
+        페이지네이션
+============================ */
+.bh-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  padding: 20px 0;
+}
+
+.bh-pagination-btn {
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #2b2f55;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bh-pagination-btn:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #7d5cf6;
+  color: #7d5cf6;
+}
+
+.bh-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bh-pagination-numbers {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bh-pagination-number {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #2b2f55;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bh-pagination-number:hover {
+  background: #f9fafb;
+  border-color: #7d5cf6;
+  color: #7d5cf6;
+}
+
+.bh-pagination-number.active {
+  background: #7d5cf6;
+  border-color: #7d5cf6;
+  color: #ffffff;
+}
+
+.bh-pagination-number.active:hover {
+  background: #6c4ee6;
+  border-color: #6c4ee6;
+}
+
+.bh-pagination-ellipsis {
+  padding: 0 8px;
+  color: #6a6f9d;
+  font-size: 0.9rem;
+}
+
+/* ============================
+        반응형
+============================ */
+@media (max-width: 768px) {
+  .bh-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bh-match-content {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bh-match-stats {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .bh-date-filter-header {
+    padding: 12px 14px;
+  }
+
+  .bh-date-filter-dropdown {
+    max-height: 300px;
+  }
+
+  .bh-date-filter-option {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .bh-pagination {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .bh-pagination-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .bh-pagination-number {
+    min-width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+}

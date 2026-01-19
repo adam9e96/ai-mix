@@ -1,0 +1,397 @@
+/* =======================
+    QnA 질문 작성 페이지
+    ✔ Detail/List와 동일한 톤
+======================= */
+
+.qna-ask-wrapper {
+  background: transparent;
+  min-height: 100vh;
+  padding: 64px 0 96px;
+}
+
+.qna-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #f4f5fb;
+  border-radius: 24px;
+  padding: 40px 48px 48px;
+}
+
+.qna-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #3f3fbf;
+}
+
+.qna-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 익명 옵션 */
+.anon-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #f9fafc;
+  border-radius: 12px;
+  border: 1px solid #ececff;
+  font-size: 14px;
+}
+
+.anon-inline label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+}
+
+.anon-inline input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #7d5cf6;
+  cursor: pointer;
+}
+
+.anon-info {
+  font-size: 12px;
+  color: #777;
+  font-weight: 500;
+}
+
+/* 입력 필드들 */
+.qna-input,
+.anon-password-input,
+.qna-textarea {
+  width: 100%;
+  border: 1px solid #e0def7;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  font-family: "Pretendard", sans-serif;
+  background: #ffffff;
+  color: #333;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.qna-input::placeholder,
+.anon-password-input::placeholder,
+.qna-textarea::placeholder {
+  color: #999;
+}
+
+/* 비밀번호 입력 박스 */
+.pw-box {
+  width: 100%;
+  position: relative;
+}
+
+.pw-input {
+  padding-right: 48px;
+}
+
+.pw-eye {
+  position: absolute;
+  right: 14px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+  z-index: 15;
+  height: auto;
+  margin: auto 0;
+}
+
+.qna-textarea {
+  min-height: 200px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.qna-input:focus,
+.anon-password-input:focus,
+.qna-textarea:focus {
+  outline: none;
+  border-color: #7d5cf6;
+  box-shadow: 0 0 0 3px rgba(125, 92, 246, 0.1);
+  background: #ffffff;
+}
+
+/* 제출 버튼 */
+.qna-submit-btn {
+  width: 100%;
+  padding: 16px 0;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #7d5cf6 0%, #6a4ee6 100%);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(125, 92, 246, 0.25);
+  margin-top: 8px;
+}
+
+.qna-submit-btn:hover {
+  background: linear-gradient(135deg, #6a4ee6 0%, #5f43e6 100%);
+  box-shadow: 0 6px 16px rgba(125, 92, 246, 0.35);
+  transform: translateY(-1px);
+}
+
+.qna-submit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(125, 92, 246, 0.25);
+}
+
+/* 태그 생성 섹션 */
+.tag-generate-section {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tag-actions-inline {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.tag-generate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: 1px solid #7d5cf6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #7d5cf6;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  white-space: nowrap;
+}
+
+.tag-generate-btn:hover:not(:disabled) {
+  background: #f0f2ff;
+  border-color: #6a4ee6;
+}
+
+.tag-generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tag-skip-btn-inline {
+  flex: 1;
+  padding: 12px 24px;
+  border: 1px solid #e0def7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #666;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.tag-skip-btn-inline:hover {
+  background: #f9fafc;
+  border-color: #7d5cf6;
+  color: #7d5cf6;
+}
+
+/* 태그 섹션 */
+.tag-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #f9fafc;
+  border-radius: 12px;
+  border: 1px solid #ececff;
+}
+
+.tag-section-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-item {
+  padding: 6px 14px;
+  border: 1px solid #e0def7;
+  border-radius: 20px;
+  background: #ffffff;
+  color: #5b6cff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-item:hover {
+  background: #f0f2ff;
+  border-color: #7d5cf6;
+}
+
+.tag-item.selected {
+  background: linear-gradient(135deg, #7d5cf6 0%, #6a4ee6 100%);
+  color: #ffffff;
+  border-color: #7d5cf6;
+  box-shadow: 0 2px 8px rgba(125, 92, 246, 0.25);
+}
+
+.tag-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.tag-skip-btn {
+  flex: 1;
+  padding: 12px 0;
+  border: 1px solid #e0def7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-skip-btn:hover {
+  background: #f9fafc;
+  border-color: #7d5cf6;
+  color: #7d5cf6;
+}
+
+.tag-update-btn {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #7d5cf6 0%, #6a4ee6 100%);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(125, 92, 246, 0.25);
+}
+
+.tag-update-btn:hover {
+  background: linear-gradient(135deg, #6a4ee6 0%, #5f43e6 100%);
+  box-shadow: 0 4px 12px rgba(125, 92, 246, 0.35);
+  transform: translateY(-1px);
+}
+
+.tag-update-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(125, 92, 246, 0.25);
+}
+
+/* ====================================
+      태그 생성 모달
+==================================== */
+.tag-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.tag-modal-container {
+  width: 500px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.tag-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tag-modal-header h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #3f3fbf;
+  margin: 0;
+}
+
+.tag-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.tag-modal-close:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.tag-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tag-password-section {
+  margin-bottom: 20px;
+}
+
+.tag-password-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.tag-modal-actions {
+  display: flex;
+  gap: 12px;
+}

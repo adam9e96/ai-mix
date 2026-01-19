@@ -1,0 +1,8 @@
+# 채팅 서비스 설정
+chat:
+  # 세션 제목 최대 길이 (자)
+  max-title-length: 30
+  # 세션 제목 생략 표시
+  title-ellipsis: "..."
+  # 기본 세션 제목 (메시지가 없을 때 사용)
+  default-title: "새 대화"

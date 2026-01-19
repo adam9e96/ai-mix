@@ -1,0 +1,577 @@
+/* ============================================================
+   🔷 AI-MIX Auth Page 공통 스타일
+============================================================ */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px 20px;
+  background: transparent;
+  min-height: 100vh;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  margin-top: 0;
+}
+
+.auth-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0;
+  background: white;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  margin-top: -32px;
+  margin-left: -32px;
+  margin-right: -32px;
+  padding-top: 32px;
+  border-radius: 16px 16px 0 0;
+}
+
+.auth-logo-text {
+  font-size: 36px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #7d5cf6 0%, #6a4ee6 50%, #5f43e6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 8px rgba(125, 92, 246, 0.2);
+}
+
+.auth-logo {
+  width: auto;
+  max-width: 280px;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  display: block;
+  filter: none;
+  -webkit-filter: none;
+}
+
+.auth-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #4348c5;
+  text-align: center;
+  padding-top: 0;
+  margin-top: 8px;
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* ============================================================
+   🔷 폼 입력 요소
+============================================================ */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.8px solid #d7d8df;
+  background: #fafbff;
+  font-size: 15px;
+  transition: border 0.25s, background 0.25s;
+}
+
+.auth-input:focus {
+  border-color: #6a6ff7;
+  background: white;
+  outline: none;
+}
+
+.auth-textarea {
+  resize: none;
+  height: 90px;
+}
+
+/* ============================================================
+   🔷 체크박스
+============================================================ */
+.auth-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* ============================================================
+   🔷 버튼
+============================================================ */
+.auth-btn {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #6a6ff7;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.auth-btn:hover {
+  background: #585df0;
+}
+
+/* ============================================================
+   🔷 하단 링크
+============================================================ */
+.auth-bottom {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.auth-bottom span {
+  margin-left: 6px;
+  color: #4348c5;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ============================================================
+   🔥 비밀번호 영역 (아이콘 포함)
+============================================================ */
+.pw-box {
+  width: 100%;
+  position: relative;
+}
+
+.pw-input {
+  padding-right: 48px; /* 눈 아이콘 자리 */
+}
+
+/* 👁 눈 아이콘 */
+.pw-eye {
+  position: absolute;
+  right: 14px; /* 오른쪽 끝 */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  line-height: 1;
+}
+
+/* ============================================================
+   🔰 비밀번호 조건 메시지
+============================================================ */
+.pw-valid-row {
+  margin-top: -10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pw-success {
+  color: #28a745;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pw-fail {
+  color: #d9534f;
+}
+
+/* 아이콘 정렬 */
+.pw-success svg {
+  margin-bottom: -2px;
+}
+
+.auth-input,
+.pw-input {
+  box-sizing: border-box; /* 입력창 튀어나옴 방지 */
+}
+
+/* ============================================================
+   🔷 이메일 입력 (사용자명 @ 도메인)
+============================================================ */
+.email-input-box {
+  width: 100%;
+  position: relative;
+  border: 1.8px solid #d7d8df;
+  border-radius: 10px;
+  background: #fafbff;
+  transition: border 0.25s, background 0.25s;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.email-input-box:has(.email-username-input:focus),
+.email-input-box:has(.email-domain-input:focus) {
+  border-color: #6a6ff7;
+  background: white;
+}
+
+.email-input-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  gap: 4px;
+}
+
+.email-username-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 12px 8px 12px 14px;
+  font-size: 15px;
+  outline: none;
+  color: #333;
+  transition: background 0.25s;
+}
+
+.email-username-input::placeholder {
+  color: #999;
+}
+
+.email-at {
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+  flex-shrink: 0;
+  padding: 0 4px;
+  background: transparent;
+}
+
+.email-domain-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  z-index: 999999;
+}
+
+.email-domain-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 12px 36px 12px 8px;
+  font-size: 15px;
+  outline: none;
+  color: #333;
+  transition: background 0.25s;
+}
+
+.email-domain-input::placeholder {
+  color: #999;
+}
+
+.email-dropdown-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  z-index: 10;
+  transition: color 0.2s;
+}
+
+.email-dropdown-btn:hover {
+  color: #4348c5;
+}
+
+.email-dropdown {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 999999;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.email-dropdown-title {
+  padding: 10px 14px;
+  background: #4348c5;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px 10px 0 0;
+  position: sticky;
+  top: 0;
+}
+
+.email-dropdown-item {
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.email-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.email-dropdown-item:hover {
+  background: #f5f5ff;
+}
+
+.email-dropdown-item.selected {
+  background: #e8e9ff;
+  color: #4348c5;
+  font-weight: 500;
+}
+
+.email-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #d9534f;
+  margin-bottom: 0;
+}
+
+.pw-box {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================================
+   🔷 프로필 이미지 업로드
+============================================================ */
+.auth-avatar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-avatar-preview {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9ff;
+  border-radius: 12px;
+  border: 2px dashed #d1d5ff;
+}
+
+.auth-avatar-preview-img {
+  max-width: 200px;
+  max-height: 200px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-avatar-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.auth-avatar-remove:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.auth-file-label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.8px solid #d7d8df;
+  background: #fafbff;
+  cursor: pointer;
+  transition: border 0.25s, background 0.25s;
+  gap: 12px;
+}
+
+.auth-file-label:hover {
+  border-color: #6a6ff7;
+  background: white;
+}
+
+.auth-file-button {
+  padding: 6px 14px;
+  background: #e5e7eb;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   🔷 이메일 인증 관련
+============================================================ */
+.auth-verify-btn {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border: 1.5px solid #6a6ff7;
+  color: #6a6ff7;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: -8px; /* 입력창과 가깝게 */
+}
+
+.auth-verify-btn:hover {
+  background: #f0f1ff;
+}
+
+.verification-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: -8px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.verification-input-row {
+  display: flex;
+  gap: 8px;
+  position: relative;
+}
+
+.verification-code-input {
+  flex: 1;
+  padding-right: 50px !important; /* 타이머 공간 */
+  letter-spacing: 2px;
+  font-family: monospace;
+  font-size: 16px;
+}
+
+.verification-timer {
+  position: absolute;
+  right: 100px; /* 버튼 왼쪽 */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #d9534f;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 확인 버튼이 있을 때의 타이머 위치 조정 */
+.verification-code-input:not(:disabled) + .verification-timer {
+  right: 100px; 
+}
+/* 확인 버튼이 없을 때(완료 등)는 조정 필요할 수 있음 */
+
+.auth-verify-confirm-btn {
+  padding: 0 20px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.auth-verify-confirm-btn:hover {
+  background: #000;
+}
+
+.verification-success-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 16px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.verification-retry-text {
+  font-size: 12px;
+  color: #888;
+  text-align: right;
+  margin-right: 4px;
+}
+
+.retry-link {
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+.retry-link:hover {
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+

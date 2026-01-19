@@ -1,0 +1,76 @@
+/* =============================
+      TOGGLE SWITCH STYLE
+============================= */
+
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-label {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 켜짐 상태 - 보라색 */
+.toggle-switch.toggle-on {
+  background: linear-gradient(135deg, #7d5cf6 0%, #5b3fd9 100%);
+}
+
+/* 꺼짐 상태 - 연한 회색 */
+.toggle-switch.toggle-off {
+  background: #e0e0e0;
+}
+
+/* 호버 효과 */
+.toggle-switch:not(.toggle-disabled):hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-switch.toggle-on:not(.toggle-disabled):hover {
+  background: linear-gradient(135deg, #6d4ce6 0%, #4b2fc9 100%);
+}
+
+.toggle-switch.toggle-off:not(.toggle-disabled):hover {
+  background: #d0d0d0;
+}
+
+/* 비활성화 상태 */
+.toggle-switch.toggle-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* 핸들 (흰색 원) */
+.toggle-handle {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  will-change: transform;
+}
+
+/* 포커스 스타일 (접근성) */
+.toggle-switch:focus-visible {
+  outline: 2px solid #7d5cf6;
+  outline-offset: 2px;
+}

@@ -1,0 +1,1368 @@
+/* ====================================
+      유틸
+==================================== */
+.hidden {
+  display: none !important;
+}
+
+/* ====================================
+      전체 레이아웃
+==================================== */
+.chat-layout {
+  display: flex;
+  align-items: stretch;
+  height: calc(100vh - 70px);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* ====================================
+      사이드바
+==================================== */
+.chat-sidebar {
+  width: 260px;
+  height: 100%;
+  background: #262b44;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #1f2336;
+  border-radius: 0 20px 20px 0;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  transform: translateX(0);
+  opacity: 1;
+  flex-shrink: 0;
+  will-change: width, opacity;
+  overflow: hidden;
+  margin: 0;
+}
+
+.chat-sidebar.closed {
+  width: 0;
+  padding: 0;
+  border-right: none;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 사이드바 제목 / 버튼 그룹 */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 대화 + 버튼 묶음 */
+.sidebar-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-title-group h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* + 버튼 */
+.sidebar-add {
+  background: #7a77ff;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sidebar-add:hover {
+  background: #9a97ff;
+  transform: translateY(-2px);
+}
+
+/* 사이드바 접기 버튼 */
+.sidebar-collapse-btn {
+  background: #3a3f5c;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: 0.2s;
+}
+
+.sidebar-collapse-btn:hover {
+  background: #4d5473;
+  transform: translateY(-2px);
+}
+
+/* 사이드바 열기 버튼 */
+.sidebar-open-btn {
+  position: absolute;
+  left: 0;
+  top: 45%;
+  width: 42px;
+  height: 84px;
+  background: #262b44;
+  color: white;
+  border-radius: 0 12px 12px 0;
+  border: 1px solid #1f2336;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  will-change: transform;
+}
+
+.sidebar-open-btn:hover {
+  background: #313657;
+}
+
+/* ====================================
+      세션 리스트
+==================================== */
+.session-list {
+  margin-top: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* 스크롤 */
+.session-list::-webkit-scrollbar {
+  width: 6px;
+}
+.session-list::-webkit-scrollbar-thumb {
+  background: #7a77ff;
+  border-radius: 10px;
+}
+.session-list::-webkit-scrollbar-thumb:hover {
+  background: #9a97ff;
+}
+
+/* 세션 아이템 */
+.session-item {
+  padding: 12px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.2s;
+  position: relative;
+  margin: 0 4px;
+}
+
+.session-item span {
+  flex: 1;
+  font-size: 14px;
+}
+
+.session-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.session-item.active {
+  background: #7a77ff;
+}
+
+/* 세션 ... 버튼 */
+.session-more {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #ddd;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.session-item:hover .session-more {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.session-more:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* 세션 드롭다운 */
+.session-dropdown {
+  position: absolute;
+  right: 0;
+  top: 28px;
+  width: 140px;
+  padding: 6px 0;
+  background: #333955;
+  border-radius: 10px;
+  z-index: 500;
+  animation: fadeIn 0.15s ease;
+}
+
+.session-dropdown div {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: 0.15s;
+  font-size: 14px;
+  color: white;
+}
+
+.session-dropdown div:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.delete-item {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.delete-item:hover {
+  background: rgba(255, 80, 80, 0.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ====================================
+      채팅 영역
+==================================== */
+.chat-area {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 25px 10px 25px;
+  overflow: hidden;
+  transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  margin: 0 10px 0 0;
+  box-shadow: 0 4px 24px rgba(138, 99, 255, 0.15);
+  will-change: margin-left, border-radius;
+}
+
+.chat-area.expanded {
+  margin-left: 42px;
+  border-radius: 20px;
+  transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 헤더 */
+.chat-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.chat-title-wrapper h1 {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.chat-info-icon {
+  background: transparent;
+  border: none;
+  color: #7d5cf6;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  opacity: 0.7;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.chat-info-icon:hover {
+  opacity: 1;
+  background: rgba(125, 92, 246, 0.1);
+  transform: scale(1.1);
+}
+
+.chat-header h1 {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0;
+  color: #333;
+}
+
+.chat-header p {
+  margin-top: 4px;
+  color: #666;
+}
+
+/* 챗봇 안내 툴팁 */
+.chat-info-tooltip {
+  max-width: 320px !important;
+  background: linear-gradient(135deg, #7d5cf6 0%, #9a8aff 100%) !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  padding: 12px 16px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(125, 92, 246, 0.4),
+    0 4px 12px rgba(125, 92, 246, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  z-index: 10000 !important;
+  word-break: keep-all !important;
+  text-align: left !important;
+  opacity: 1 !important;
+  backdrop-filter: blur(0) !important;
+}
+
+.chat-info-tooltip::before {
+  background: linear-gradient(135deg, #7d5cf6 0%, #9a8aff 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.knowledge-card-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #6c63ff 0%, #574fff 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.knowledge-card-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #574fff 0%, #4a42e6 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+}
+
+.knowledge-card-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ====================================
+      메시지 영역
+==================================== */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 15px;
+  padding-right: 10px;
+  padding-bottom: 80px; /* 배틀 버튼 공간 확보 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 환영 화면 */
+.chat-welcome {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.welcome-content {
+  text-align: center;
+  max-width: 500px;
+  animation: fadeInUp 0.6s ease;
+}
+
+.welcome-icon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #6c63ff 0%, #9a97ff 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 10px 30px rgba(108, 99, 255, 0.3);
+}
+
+.welcome-icon svg {
+  width: 45px;
+  height: 45px;
+}
+
+.welcome-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.welcome-description {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.welcome-features {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.feature-icon {
+  font-size: 32px;
+  width: 60px;
+  height: 60px;
+  background: #f5f6ff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover .feature-icon {
+  transform: translateY(-4px);
+}
+
+.feature-item span {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.welcome-start-btn {
+  background: linear-gradient(135deg, #6c63ff 0%, #9a97ff 100%);
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+}
+
+.welcome-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+}
+
+.welcome-start-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 빈 대화 화면 (세션은 있지만 메시지 없음) */
+.chat-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.empty-content {
+  text-align: center;
+  animation: fadeInUp 0.4s ease;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 16px;
+  color: #999;
+  margin: 0;
+}
+
+/* 메시지 정렬 */
+.msg {
+  width: 100%;
+  display: flex;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.msg.user {
+  justify-content: flex-end;
+}
+
+.msg.bot {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: 65%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 15px;
+  line-height: 1.45;
+  display: inline-block;
+}
+
+/* 유저 말풍선 */
+.msg.user .bubble {
+  background: #6c63ff;
+  color: #fff;
+}
+
+/* AI 말풍선 */
+.msg.bot .bubble {
+  background: #e4e8ff;
+  color: #333;
+}
+
+/* 메시지 ... 버튼 */
+.msg-more {
+  position: absolute;
+  top: 4px;
+  right: -5px;
+  opacity: 0;
+  transition: 0.15s;
+}
+
+.msg:hover .msg-more {
+  opacity: 1;
+}
+
+.msg-more button {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+}
+
+.msg-more button:hover {
+  color: #777;
+}
+
+/* ====================================
+      메시지 드롭다운
+==================================== */
+.msg-dropdown {
+  position: absolute;
+  top: 26px;
+  right: 0;
+  background: #333955;
+  border-radius: 10px;
+  min-width: 120px;
+  overflow: hidden;
+  z-index: 200;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.msg-dropdown div {
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.msg-dropdown div:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ====================================
+      메시지 수정 입력창
+==================================== */
+.edit-box {
+  margin-top: 6px;
+  display: flex;
+  gap: 6px;
+}
+
+.edit-box input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  font-size: 14px;
+}
+
+.edit-box button {
+  background: #6c63ff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.edit-box button:hover {
+  background: #574fff;
+}
+
+/* ====================================
+      입력창
+==================================== */
+.chat-input {
+  display: flex;
+  gap: 10px;
+  padding: 12px 0 4px 0;
+  border-top: 1px solid rgba(221, 221, 221, 0.3);
+  background: transparent;
+}
+
+.chat-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #ccc;
+  background: white;
+  font-size: 16px;
+}
+
+.chat-input button {
+  background: #6c63ff;
+  border: none;
+  padding: 14px 26px;
+  border-radius: 14px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.chat-input button:hover {
+  background: #574fff;
+}
+
+/* ====================================
+      Chat 삭제 확인 모달
+==================================== */
+.chat-delete-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.chat-delete-modal-box {
+  width: 380px;
+  background: #fff;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.chat-delete-modal-box h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.chat-delete-modal-btn {
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 14px;
+  border: none;
+  background: #6c63ff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.chat-delete-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ====================================
+      Chat 세션 생성/수정 모달
+==================================== */
+.chat-session-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.chat-session-modal-box {
+  width: 380px;
+  background: #fff;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.chat-session-modal-box h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.chat-session-modal-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #ccc;
+  margin-bottom: 18px;
+  font-size: 16px;
+}
+
+.chat-session-modal-btn {
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 14px;
+  border: none;
+  background: #6c63ff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.chat-session-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ====================================
+      Chat 지식카드 생성 모달
+==================================== */
+.chat-knowledge-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.chat-knowledge-modal-box {
+  width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.chat-knowledge-modal-box h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.chat-knowledge-modal-btn {
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 14px;
+  border: none;
+  background: #6c63ff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.chat-knowledge-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ====================================
+      배틀하기 버튼
+==================================== */
+.battle-btn {
+  width: 100%;
+  padding: 14px 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  background: linear-gradient(135deg, #ff7a18, #ff4e00);
+  border: none;
+  color: #fff;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+.battle-btn:hover {
+  background: linear-gradient(135deg, #ff8a28, #ff5e10);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.battle-btn svg {
+  stroke-width: 2.3;
+}
+
+/* ======================================
+   🌈 AI-MIX CODEBLOCK (버블 내부만 적용)
+====================================== */
+.code-block-wrapper {
+  position: relative;
+  margin: 8px 0;
+}
+
+.code-block-wrapper > div {
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 10px !important;
+}
+
+.bubble pre {
+  background: #f8f9fa;
+  color: #2d3748;
+  padding: 18px 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 0;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(108, 99, 255, 0.9);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.code-block-wrapper:hover .code-copy-btn {
+  opacity: 1;
+}
+
+.code-copy-btn:hover {
+  background: rgba(108, 99, 255, 1);
+  border-color: rgba(108, 99, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.3);
+}
+
+.code-copy-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(108, 99, 255, 0.2);
+}
+
+.code-copy-btn svg {
+  stroke-width: 2.5;
+}
+
+/* 내부 코드 */
+.bubble code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  color: #2d3748;
+  font-size: 14px;
+}
+
+/* inline 코드 */
+.bubble p > code,
+.bubble code:not([class*="language-"]) {
+  background: rgba(108, 99, 255, 0.1);
+  color: #6c63ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+/* =====================================================
+   🔧 마크다운 리스트 정렬 보정 (핵심 수정 부분)
+===================================================== */
+
+/* 숫자 / 불릿 기본 정렬 */
+.msg .bubble ul,
+.msg .bubble ol {
+  margin: 6px 0;
+  padding-left: 20px; /* 들여쓰기만 직접 제어 */
+  list-style-position: outside; /* ⭐ 핵심 */
+}
+
+/* li 줄 정렬 */
+.msg .bubble li {
+  margin: 4px 0;
+  line-height: 1.6;
+}
+
+/* 숫자 리스트 미세 조정 */
+.msg .bubble ol {
+  padding-left: 22px;
+}
+
+/* 중첩 리스트도 자연스럽게 */
+.msg .bubble li ul,
+.msg .bubble li ol {
+  margin-top: 4px;
+  padding-left: 14px;
+}
+
+/* ====================================
+      배틀 전적 표시
+==================================== */
+.battle-summaries-container {
+  margin: 8px 0;
+}
+
+.battle-summaries-toggle {
+  background: transparent;
+  border: none;
+  color: #6c63ff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.battle-summaries-toggle:hover {
+  background: rgba(108, 99, 255, 0.1);
+}
+
+.battle-summaries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  padding-left: 12px;
+}
+
+.battle-summary-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(108, 99, 255, 0.05);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.battle-detail-btn {
+  background: #6c63ff;
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.battle-detail-btn:hover {
+  background: #574fff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(108, 99, 255, 0.3);
+}
+
+.battle-detail-btn:active {
+  transform: translateY(0);
+}
+
+.battle-result-badge {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+}
+
+.battle-result-badge.win {
+  background: #10b981;
+  color: white;
+}
+
+.battle-result-badge.lose {
+  background: #ef4444;
+  color: white;
+}
+
+.battle-result-badge.draw {
+  background: #6b7280;
+  color: white;
+}
+
+.battle-summary-text {
+  flex: 1;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.battle-btn-wrapper {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  z-index: 300;
+  width: 160px;
+}
+
+/* ====================================
+      지식카드 생성 모달
+==================================== */
+.knowledge-card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.array-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.array-input-group .modal-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.remove-item-btn {
+  background: #f3f4f6;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.remove-item-btn:hover {
+  background: #e5e7eb;
+  color: #ef4444;
+}
+
+.add-item-btn {
+  background: #f0f2ff;
+  border: 1px dashed #6c63ff;
+  color: #6c63ff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.add-item-btn:hover {
+  background: #e8ebff;
+  border-color: #574fff;
+  color: #574fff;
+}
+
+/* ====================================
+      지식카드 미리보기
+==================================== */
+.knowledge-card-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.card-preview-field {
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  color: #333;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.card-preview-field.empty {
+  color: #999;
+  font-style: italic;
+}
+
+.card-preview-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-preview-list li {
+  padding: 10px 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 32px;
+}
+
+.card-preview-list li::before {
+  content: "•";
+  position: absolute;
+  left: 16px;
+  color: #6c63ff;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.analyzing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 200px;
+}
+
+/* ====================================
+      지식카드 편집 입력 필드
+==================================== */
+.card-edit-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #333;
+  background: #fff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.card-edit-input:focus {
+  outline: none;
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+}
+
+.card-edit-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #333;
+  background: #fff;
+  transition: all 0.2s ease;
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.card-edit-textarea:focus {
+  outline: none;
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+}
+
+/* ====================================
+      배열 편집 컨테이너
+==================================== */
+.array-edit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.array-edit-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.array-edit-item .card-edit-input {
+  flex: 1;
+  margin: 0;
+}
+
+.array-remove-btn {
+  background: #f3f4f6;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.array-remove-btn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.array-add-btn {
+  background: #f0f2ff;
+  border: 1px dashed #6c63ff;
+  color: #6c63ff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.array-add-btn:hover {
+  background: #e8ebff;
+  border-color: #574fff;
+  color: #574fff;
+}

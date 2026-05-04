@@ -20,8 +20,9 @@ public class VerificationCodeService {
     private static final long EXPIRATION_MINUTES = 5;
 
     public void sendVerificationCode(String email) {
+        String normalizedEmail = normalizeEmail(email);
         String code = generateCode();
-        String key = PREFIX + email;
+        String key = PREFIX + normalizedEmail;
 
         // Redis에 저장 (5분 만료)
         redisTemplate.opsForValue().set(key, code, Duration.ofMinutes(EXPIRATION_MINUTES));
@@ -29,20 +30,30 @@ public class VerificationCodeService {
         // 이메일 전송
         String subject = "[AI-MIX] 이메일 인증 코드";
         String content = createEmailContent(code);
-        emailService.sendEmail(email, subject, content);
+        emailService.sendEmail(normalizedEmail, subject, content);
 
-        log.info("Verification code sent to email: {}", email);
+        log.info("Verification code sent to email: {}", normalizedEmail);
     }
 
     public boolean verifyCode(String email, String code) {
-        String key = PREFIX + email;
+        String normalizedEmail = normalizeEmail(email);
+        String normalizedCode = normalizeCode(code);
+        String key = PREFIX + normalizedEmail;
         String storedCode = redisTemplate.opsForValue().get(key);
 
-        if (storedCode != null && storedCode.equals(code)) {
+        if (storedCode != null && storedCode.equals(normalizedCode)) {
             redisTemplate.delete(key); // 인증 성공 시 코드 삭제
             return true;
         }
         return false;
+    }
+
+    private String normalizeEmail(String email) {
+        return email == null ? "" : email.trim().toLowerCase();
+    }
+
+    private String normalizeCode(String code) {
+        return code == null ? "" : code.trim();
     }
 
     private String generateCode() {

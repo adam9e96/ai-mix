@@ -100,6 +100,7 @@ export default function Signup() {
       await sendEmailVerification(fullEmail);
       toast.success("인증 코드가 발송되었습니다. 이메일을 확인해주세요.");
       setVerificationState("SENT");
+      setVerificationCode("");
       setTimer(300); // 5분
     } catch (err) {
       toast.error("인증 코드 발송 실패: " + (err.response?.data?.message || "오류 발생"));

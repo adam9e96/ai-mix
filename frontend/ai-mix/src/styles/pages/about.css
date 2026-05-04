@@ -52,6 +52,17 @@
   margin: 0;
 }
 
+.about-text-spaced {
+  margin-top: 1.25rem;
+}
+
+.about-text-strong {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-top: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
 .about-features {
   list-style: none;
   padding: 0;

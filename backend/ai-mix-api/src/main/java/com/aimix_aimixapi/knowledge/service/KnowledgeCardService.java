@@ -22,6 +22,9 @@ import com.aimix_aimixapi.user.entity.User;
 import com.aimix_aimixapi.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -69,6 +72,10 @@ public class KnowledgeCardService {
      * @apiNote 점검O
      * @since 2025-12-29
      */
+    @Caching(evict = {
+            @CacheEvict(value = "knowledgeCardTop10", allEntries = true),
+            @CacheEvict(value = "knowledgeCards", allEntries = true)
+    })
     @Transactional
     public KnowledgeCardResponse createCard(String email, KnowledgeCardCreateRequest request) {
         log.info("개념 카드 생성 요청: email={}, title={}", email, request.getTitle());
@@ -338,6 +345,11 @@ public class KnowledgeCardService {
      * @apiNote 점검O
      * @since 2025-12-29
      */
+    @Caching(evict = {
+            @CacheEvict(value = "knowledgeCardTop10", allEntries = true),
+            @CacheEvict(value = "knowledgeCards", allEntries = true),
+            @CacheEvict(value = "knowledgeCardDetail", key = "#cardId")
+    })
     @Transactional
     public KnowledgeCardResponse updateCard(String email, Long cardId, KnowledgeCardUpdateRequest request) {
         log.info("개념 카드 수정 요청: email={}, cardId={}", email, cardId);
@@ -411,6 +423,11 @@ public class KnowledgeCardService {
      * @apiNote 점검O
      * @since 2025-12-29
      */
+    @Caching(evict = {
+            @CacheEvict(value = "knowledgeCardTop10", allEntries = true),
+            @CacheEvict(value = "knowledgeCards", allEntries = true),
+            @CacheEvict(value = "knowledgeCardDetail", key = "#cardId")
+    })
     @Transactional
     public void deleteCard(String email, Long cardId) {
         log.info("개념 카드 삭제 요청: email={}, cardId={}", email, cardId);
@@ -456,22 +473,20 @@ public class KnowledgeCardService {
 
     /**
      * 카드 상세 응답 생성 (공통 로직)
+     * - 조회수: 원자적 UPDATE 쿼리로 동시성 안전하게 증가
+     * - 관련 카드: findAllByIdIn()으로 IN 쿼리 1번으로 조회 (N+1 방지)
      *
      * @param card  카드 엔티티
      * @param email 사용자 이메일 (선택적, 로그인한 사용자의 좋아요 상태 반환)
      */
     private KnowledgeCardDetailResponse buildCardDetailResponse(KnowledgeCard card, String email) {
-        // 조회수 증가 (트랜잭션 내에서 쓰기 작업 수행)
-        card.incrementViewCount();
-        cardRepository.save(card);
+        // 조회수 원자적 증가 (UPDATE ... SET view_count = view_count + 1)
+        cardRepository.incrementViewCount(card.getId());
 
-        // 관련 카드 조회
+        // 관련 카드 조회 - IN 쿼리로 한 번에 조회 (기존: findById N번 → 개선: findAllByIdIn 1번)
         List<KnowledgeCardListResponse> relatedCards = new ArrayList<>();
         if (card.getRelatedConcepts() != null && !card.getRelatedConcepts().isEmpty()) {
-            relatedCards = card.getRelatedConcepts().stream()
-                    .map(cardRepository::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
+            relatedCards = cardRepository.findAllByIdIn(card.getRelatedConcepts()).stream()
                     .map(converter::convertToCardListResponse)
                     .collect(Collectors.toList());
         }
@@ -494,13 +509,14 @@ public class KnowledgeCardService {
     }
 
     /**
-     * 카드 개수 조회
+     * 카드 개수 조회 (Redis 캐시 적용, TTL: 10분)
      * 전체, 공개, 비공개 카드 개수를 반환합니다.
      *
      * @return 카드 개수 응답 DTO
      * @apiNote 점검O
      * @since 2025-12-29
      */
+    @Cacheable(value = "knowledgeCards", key = "'count'")
     @Transactional(readOnly = true)
     public KnowledgeCardCountResponse getCardCount() {
         log.info("카드 개수 조회");
@@ -586,9 +602,10 @@ public class KnowledgeCardService {
     }
 
     /**
-     * 조회수 TOP10 카드 조회
+     * 조회수 TOP10 카드 조회 (Redis 캐시 적용, TTL: 30분)
      * 공개된 카드만 조회합니다 (비회원도 접근 가능)
      */
+    @Cacheable(value = "knowledgeCardTop10", key = "'views'")
     @Transactional(readOnly = true)
     public List<KnowledgeCardListResponse> getTop10CardsByViews() {
         log.info("조회수 TOP10 카드 조회");
@@ -598,9 +615,10 @@ public class KnowledgeCardService {
     }
 
     /**
-     * 좋아요 수 TOP10 카드 조회
+     * 좋아요 수 TOP10 카드 조회 (Redis 캐시 적용, TTL: 30분)
      * 공개된 카드만 조회합니다 (비회원도 접근 가능)
      */
+    @Cacheable(value = "knowledgeCardTop10", key = "'likes'")
     @Transactional(readOnly = true)
     public List<KnowledgeCardListResponse> getTop10CardsByLikes() {
         log.info("좋아요 수 TOP10 카드 조회");

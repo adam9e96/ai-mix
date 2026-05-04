@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import "@styles/pages/qnadetail.css";
 
@@ -28,13 +28,14 @@ import { useQnaDetailStore } from "@/stores/qna.detail.store";
 import { useQnaStore } from "@/stores/qna.list.store";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUIStore } from "@/stores/ui.store";
-import BattleModal from "@/components/battle/BattleModal";
-import LoginModal from "@/components/modal/LoginModal";
+// 무거운 컴포넌트는 lazy 로딩 (BattleModal 735줄, QnaGraph 479줄 + ReactFlow)
+const BattleModal = lazy(() => import("@/components/battle/BattleModal"));
+const LoginModal = lazy(() => import("@/components/modal/LoginModal"));
+const QnaGraph = lazy(() => import("@/components/qna/QnaGraph"));
 import LoadingDots from "@/components/common/LoadingDots";
 import ToggleSwitch from "@/components/common/ToggleSwitch";
 import axiosInstance from "@/api/axiosInstance";
 import { EyeIcon, EyeOffIcon } from "@/components/common/Icons";
-import QnaGraph from "@/components/qna/QnaGraph";
 
 export default function QnaDetail() {
   const { id } = useParams();
@@ -1347,24 +1348,27 @@ export default function QnaDetail() {
         </button>
       </div>
 
-      {/* 로그인 모달 */}
-      {showLoginModal && (
-        <LoginModal
-          onClose={() => setShowLoginModal(false)}
-          onSuccess={() => {
-            // 로그인 성공 후 필요한 작업 수행
-          }}
-        />
-      )}
+      {/* lazy 로딩된 모달: 표시 시에만 해당 chunk 다운로드 */}
+      <Suspense fallback={null}>
+        {/* 로그인 모달 */}
+        {showLoginModal && (
+          <LoginModal
+            onClose={() => setShowLoginModal(false)}
+            onSuccess={() => {
+              // 로그인 성공 후 필요한 작업 수행
+            }}
+          />
+        )}
 
-      {/* 배틀 모달 */}
-      {battleOpen && (
-        <BattleModal
-          id={id}
-          onClose={() => setBattleOpen(false)}
-          sourceType="QNA"
-        />
-      )}
+        {/* 배틀 모달 */}
+        {battleOpen && (
+          <BattleModal
+            id={id}
+            onClose={() => setBattleOpen(false)}
+            sourceType="QNA"
+          />
+        )}
+      </Suspense>
 
       {/* 삭제 확인 모달 (익명 질문) */}
       {showDeleteModal && question?.isAnonymous && (
@@ -1700,7 +1704,9 @@ export default function QnaDetail() {
                       position: "relative",
                     }}
                   >
-                    <QnaGraph centerQuestionId={id} maxNodes={30} />
+                    <Suspense fallback={<LoadingDots />}>
+                      <QnaGraph centerQuestionId={id} maxNodes={30} />
+                    </Suspense>
                   </div>
                 ) : (
                   <div

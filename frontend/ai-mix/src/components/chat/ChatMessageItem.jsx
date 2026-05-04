@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { updateChatMessageApi, deleteChatMessageApi } from "../../api/chat";
 import { toast } from "react-toastify";
 
-export default function ChatMessageItem({ message, isMine, onRefresh }) {
+// React.memo: 동일 props면 리렌더링 스킵 (채팅 목록 성능 최적화)
+const ChatMessageItem = memo(function ChatMessageItem({ message, isMine, onRefresh }) {
   const [isEdit, setIsEdit] = useState(false);
   const [editContent, setEditContent] = useState(message.content);
 
@@ -56,5 +57,7 @@ export default function ChatMessageItem({ message, isMine, onRefresh }) {
       )}
     </div>
   );
-}
+});
+
+export default ChatMessageItem;
 

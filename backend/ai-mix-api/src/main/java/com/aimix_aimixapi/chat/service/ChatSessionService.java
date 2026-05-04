@@ -104,6 +104,20 @@ public class ChatSessionService {
     }
 
     /**
+     * 사용자의 세션 목록을 메시지 통계와 함께 조회 (N+1 방지)
+     * 단일 JPQL 쿼리로 세션 + 메시지 개수 + 마지막 메시지 시각을 한 번에 가져옴
+     *
+     * @param user 사용자 엔티티
+     * @return [ChatSession, messageCount, lastMessageAt] 배열 리스트
+     * @since 2026-04-06
+     */
+    @Transactional(readOnly = true)
+    public List<Object[]> findSessionsWithMessageStats(User user) {
+        log.debug("사용자의 세션 목록 + 통계 조회: userId={}", user.getId());
+        return chatSessionRepository.findSessionsWithMessageStats(user);
+    }
+
+    /**
      * 세션 조회 또는 생성
      * 
      * @param user         사용자 엔티티 (null이 아니어야 함)

@@ -1,22 +1,19 @@
 /*chat */
 
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import "../styles/pages/chat.css";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import {
-  coldarkDark,
-  nord,
-  oneDark,
-  oneLight,
-} from "react-syntax-highlighter/dist/esm/styles/prism";
+// 실제 사용 테마만 import (미사용 테마 제거: coldarkDark, nord, oneLight)
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import BattleButton from "../components/battle/BattleButton";
-import BattleModal from "../components/battle/BattleModal";
-import LoginModal from "../components/modal/LoginModal";
+// 모달은 사용자 인터랙션 시에만 표시 → lazy 로딩으로 초기 번들에서 제외
+const BattleModal = lazy(() => import("../components/battle/BattleModal"));
+const LoginModal = lazy(() => import("../components/modal/LoginModal"));
 import LoadingDots from "../components/common/LoadingDots";
 import ToggleSwitch from "../components/common/ToggleSwitch";
 
@@ -712,6 +709,8 @@ export default function ChatPage() {
   ================================= */
   return (
     <>
+      {/* lazy 로딩된 모달: 표시 시에만 해당 chunk 다운로드 */}
+      <Suspense fallback={null}>
       {battleOpen && (
         <BattleModal id={currentSession} onClose={() => setBattleOpen(false)} />
       )}
@@ -729,6 +728,7 @@ export default function ChatPage() {
           }}
         />
       )}
+      </Suspense>
 
       {/* 삭제 확인 모달 */}
       <AnimatePresence>

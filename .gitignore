@@ -1,2 +1,72 @@
-/backend/uploads/users/avatars
-/sql/.idea
+# 업로드/런타임 데이터
+backend/uploads/users/avatars/
+
+# 로그 파일
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 비밀 환경 파일
+.env
+.env.local
+.env.*.local
+**/.env.local
+**/.env.*.local
+
+# 예시 환경 파일은 공유 가능
+!.env.example
+!**/.env.example
+
+# 로컬 전용 자료
+.claude
+_private
+
+# 프론트엔드 Node / Vite
+node_modules/
+frontend/ai-mix/node_modules/
+frontend/ai-mix/dist/
+frontend/ai-mix/dist-ssr/
+*.local
+
+# 백엔드 Gradle / Spring Boot
+backend/ai-mix-api/HELP.md
+backend/ai-mix-api/.gradle/
+backend/ai-mix-api/build/
+!backend/ai-mix-api/gradle/wrapper/gradle-wrapper.jar
+!backend/ai-mix-api/**/src/main/**/build/
+!backend/ai-mix-api/**/src/test/**/build/
+backend/ai-mix-api/.apt_generated/
+backend/ai-mix-api/.classpath
+backend/ai-mix-api/.factorypath
+backend/ai-mix-api/.project
+backend/ai-mix-api/.settings/
+backend/ai-mix-api/.springBeans
+backend/ai-mix-api/.sts4-cache/
+backend/ai-mix-api/bin/
+!backend/ai-mix-api/**/src/main/**/bin/
+!backend/ai-mix-api/**/src/test/**/bin/
+backend/ai-mix-api/out/
+!backend/ai-mix-api/**/src/main/**/out/
+!backend/ai-mix-api/**/src/test/**/out/
+backend/ai-mix-api/nbproject/private/
+backend/ai-mix-api/nbbuild/
+backend/ai-mix-api/dist/
+backend/ai-mix-api/nbdist/
+backend/ai-mix-api/.nb-gradle/
+
+# IDE / OS 로컬 설정
+.DS_Store
+**/.idea/
+**/.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.iws
+*.iml
+*.ipr

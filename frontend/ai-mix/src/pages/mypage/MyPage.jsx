@@ -66,14 +66,14 @@ export default function MyPage() {
         const res = await axiosInstance.get("/user/mypage");
         setData(res.data);
       } catch (err) {
-        console.error("마이페이지 불러오기 실패:", err);
-
         // 인증 오류인 경우 로그인 페이지로 리다이렉트
         if (err.response?.status === 401 || err.response?.status === 403) {
           toast.error("로그인이 필요합니다.");
           navigate("/login");
           return;
         }
+
+        console.error("마이페이지 불러오기 실패:", err);
 
         // 다른 오류는 토스트 메시지 표시
         const errorMessage =
@@ -90,6 +90,8 @@ export default function MyPage() {
 
   // 토큰 사용량 그래프 데이터 가져오기
   useEffect(() => {
+    if (!data) return;
+
     async function fetchTokenGraphData() {
       try {
         setTokenLoading(true);
@@ -106,10 +108,12 @@ export default function MyPage() {
       }
     }
     fetchTokenGraphData();
-  }, [selectedPeriod, selectedDays]);
+  }, [data, selectedPeriod, selectedDays]);
 
   // 저장된 API 키 상태 조회
   useEffect(() => {
+    if (!data) return;
+
     async function fetchApiKeyStatus() {
       try {
         setApiKeyLoading(true);
@@ -127,11 +131,13 @@ export default function MyPage() {
       }
     }
     fetchApiKeyStatus();
-  }, []);
+  }, [data]);
 
   // 차트 데이터 변환 (사용자 API 키와 공용 키 구분)
   // 새로운 API 구조: 각 날짜별로 userApiKeyTokens와 sharedApiKeyTokens 필드 제공
   const chartData = useMemo(() => {
+    if (!data) return [];
+
     const rawData = tokenGraphData?.data;
     if (!rawData || !Array.isArray(rawData)) {
       console.log("토큰 데이터 없음:", tokenGraphData);
@@ -273,7 +279,7 @@ export default function MyPage() {
       공용키합계: result.reduce((sum, item) => sum + (item.공용키 || 0), 0),
     });
     return result;
-  }, [tokenGraphData]);
+  }, [data, tokenGraphData]);
 
   // 날짜 포맷팅 (MM-DD)
   const formatDate = (dateStr) => {

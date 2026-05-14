@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -384,6 +385,12 @@ public class UserService {
      * @apiNote 점검O
      * @since 2025-12-30
      */
+    /**
+     * 사용자 프로필 조회 (Redis 캐시 적용, TTL: 5분)
+     * 닉네임 기반 프로필 + QnA 통계를 캐싱하여
+     * COUNT 쿼리 4번 반복 실행을 방지
+     */
+    @Cacheable(value = "userStats", key = "#nickname")
     @Transactional(readOnly = true)
     public UserProfileResponse getUserProfileByNickname(String nickname) {
         if (!StringUtils.hasText(nickname)) {

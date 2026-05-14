@@ -92,6 +92,7 @@ public class ChatMessageService {
 
     /**
      * 세션 ID로 해당 세션의 마지막 메시지 시각을 조회합니다.
+     * MAX 집계 쿼리를 사용하여 전체 메시지 로딩 없이 마지막 시각만 조회합니다.
      * 메시지가 하나도 없으면 null을 반환합니다.
      *
      * @param sessionId 세션 ID
@@ -101,11 +102,7 @@ public class ChatMessageService {
     @Transactional(readOnly = true)
     public LocalDateTime getLastMessageAtBySessionId(UUID sessionId) {
         log.debug("마지막 메시지 시각 조회: sessionId={}", sessionId);
-        List<ChatMessage> messages = chatMessageRepository.findBySessionIdOrderByCreatedAtAsc(sessionId);
-        if (messages.isEmpty()) {
-            return null;
-        }
-        return messages.get(messages.size() - 1).getCreatedAt();
+        return chatMessageRepository.findLastMessageAtBySessionId(sessionId);
     }
 
     /**

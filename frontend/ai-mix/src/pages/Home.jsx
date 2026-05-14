@@ -1,7 +1,7 @@
 // src/pages/Home.jsx
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import Logo from "@assets/aimix_logo.png";
+import Logo from "@assets/aimix_logo.webp";
 import "@styles/pages/home.css";
 
 export default function Home() {

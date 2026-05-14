@@ -176,7 +176,9 @@ public class ChatService {
     }
 
     /**
-     * 사용자의 채팅방 목록 조회
+     * 사용자의 채팅방 목록 조회 (N+1 최적화)
+     * 단일 JPQL 쿼리로 세션 + 메시지 통계를 한 번에 조회하여
+     * 기존 세션 N개당 2N번의 추가 쿼리를 제거
      *
      * @param email 사용자 이메일
      * @return 채팅 세션 목록 (생성일 내림차순)
@@ -187,44 +189,20 @@ public class ChatService {
         log.info("채팅방 목록 조회 요청: email={}", email);
 
         User user = findUserByEmail(email);
-        List<ChatSession> sessions = chatSessionService.findByUserOrderByCreatedAtDesc(user);
-        log.info("조회된 채팅방 개수: {}", sessions.size());
 
-        List<ChatSessionItem> sessionItems = convertToSessionItems(sessions);
-        return buildSessionListResponse(sessionItems);
-    }
+        // 단일 쿼리로 세션 + 메시지 개수 + 마지막 메시지 시각을 한 번에 조회
+        List<Object[]> results = chatSessionService.findSessionsWithMessageStats(user);
+        log.info("조회된 채팅방 개수: {}", results.size());
 
-    /**
-     * 세션 목록을 ChatSessionItem 목록으로 변환합니다.
-     *
-     * @param sessions 세션 목록
-     * @return ChatSessionItem 목록
-     */
-    private List<ChatSessionItem> convertToSessionItems(List<ChatSession> sessions) {
-        return sessions.stream()
-                .map(this::convertToSessionItem)
+        List<ChatSessionItem> sessionItems = results.stream()
+                .map(row -> {
+                    ChatSession session = (ChatSession) row[0];
+                    Long messageCount = (Long) row[1];
+                    LocalDateTime lastMessageAt = (LocalDateTime) row[2];
+                    return chatMapper.toChatSessionItem(session, messageCount, lastMessageAt);
+                })
                 .toList();
-    }
 
-    /**
-     * 세션을 ChatSessionItem으로 변환합니다.
-     *
-     * @param session 세션 엔티티
-     * @return ChatSessionItem
-     */
-    private ChatSessionItem convertToSessionItem(ChatSession session) {
-        long messageCount = chatMessageService.countBySessionId(session.getId());
-        LocalDateTime lastMessageAt = chatMessageService.getLastMessageAtBySessionId(session.getId());
-        return chatMapper.toChatSessionItem(session, messageCount, lastMessageAt);
-    }
-
-    /**
-     * 세션 목록 응답을 생성합니다.
-     *
-     * @param sessionItems 세션 아이템 목록
-     * @return ChatSessionListResponse
-     */
-    private ChatSessionListResponse buildSessionListResponse(List<ChatSessionItem> sessionItems) {
         return ChatSessionListResponse.builder()
                 .sessions(sessionItems)
                 .totalCount((long) sessionItems.size())

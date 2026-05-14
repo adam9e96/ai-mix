@@ -82,26 +82,26 @@ export const useQnaStore = create((set, get) => ({
         res = await instance.get(`/qna/questions?${queryParams}`);
       }
 
-      // Spring Page 객체 구조: { content: [...], number: 0, size: 5, totalPages: 10, ... }
+      // Spring Page 객체 구조:
+      // - 기본: { content: [...], number, size, totalPages, ... }
+      // - 현재 API: { content: [...], page: { number, size, totalPages, ... } }
       // 참고: gptSummary 필드는 백엔드에서 제거되었으므로 프론트엔드에서 고려하지 않음
       const data = res.data || {};
+      const pageData = data.page || data;
+      const content = data.content || pageData.content || [];
 
       // 디버깅: 백엔드 응답 구조 확인
       if (import.meta.env.DEV) {
         console.log("백엔드 응답 데이터:", {
           전체응답: res.data,
-          content: data.content?.length || 0,
-          number: data.number,
-          size: data.size,
-          totalPages: data.totalPages,
-          totalElements: data.totalElements,
+          content: content.length,
+          number: pageData.number,
+          size: pageData.size,
+          totalPages: pageData.totalPages,
+          totalElements: pageData.totalElements,
           응답키목록: Object.keys(data),
         });
       }
-
-      // Spring Page 객체는 직접 반환되거나 다른 구조로 감싸질 수 있음
-      // 일반적으로: res.data가 Page 객체이거나, res.data.page가 Page 객체일 수 있음
-      const pageData = data.page || data;
 
       const pageInfo = {
         // 서버에서 값이 없거나 이상하게 와도 숫자로 강제 변환해서 NaN 표시 방지
@@ -111,8 +111,10 @@ export const useQnaStore = create((set, get) => ({
         size: Number.isFinite(Number(pageData.size))
           ? Number(pageData.size)
           : 5,
-        totalPages: Number.isFinite(Number(pageData.totalPages))
-          ? Number(pageData.totalPages)
+        totalPages:
+          Number.isFinite(Number(pageData.totalPages)) &&
+          Number(pageData.totalPages) > 0
+            ? Number(pageData.totalPages)
           : 1,
       };
 
@@ -122,13 +124,10 @@ export const useQnaStore = create((set, get) => ({
           현재페이지: pageInfo.page + 1,
           전체페이지: pageInfo.totalPages,
           페이지크기: pageInfo.size,
-          아이템수: data.content?.length || 0,
-          전체아이템수: data.totalElements || 0,
+          아이템수: content.length,
+          전체아이템수: pageData.totalElements || 0,
         });
       }
-
-      // content는 data.content 또는 pageData.content에서 가져옴
-      const content = data.content || pageData.content || [];
 
       set({
         list: content,

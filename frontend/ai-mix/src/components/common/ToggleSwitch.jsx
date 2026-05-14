@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import "../../styles/components/toggle.css";
 
@@ -15,7 +15,8 @@ import "../../styles/components/toggle.css";
  * @param {ToggleSwitchProps} props
  * @returns {JSX.Element}
  */
-function ToggleSwitch({ checked, onChange, label, disabled = false }) {
+// React.memo: 토글 상태가 변경되지 않으면 리렌더링 스킵
+const ToggleSwitch = memo(function ToggleSwitch({ checked, onChange, label, disabled = false }) {
   return (
     <div className="toggle-wrapper">
       {label && <span className="toggle-label">{label}</span>}
@@ -47,7 +48,7 @@ function ToggleSwitch({ checked, onChange, label, disabled = false }) {
       </button>
     </div>
   );
-}
+});
 
 export default ToggleSwitch;
 

@@ -42,11 +42,14 @@ public class BattleQueryService {
     private final BattleProperties battleProperties;
 
     /**
-     * 사용자의 배틀 목록 조회
+     * 사용자의 배틀 목록 조회 (N+1 최적화)
+     * Fetch Join으로 배틀 + 질문 + 답변을 한 번에 로딩하여
+     * 기존 배틀 N개당 2N번의 LAZY 로딩 쿼리를 제거
      */
     public BattleListResponse getBattleList(String email) {
         User user = userService.findUserByEmail(email);
-        List<Battle> battles = battleRepository.findByUserOrderByCreatedAtDesc(user);
+        // Fetch Join으로 질문/답변을 한 번에 로딩
+        List<Battle> battles = battleRepository.findByUserWithQuestionsAndAnswers(user);
 
         List<BattleListItem> battleItems = battles.stream()
                 .map(battle -> {
@@ -71,11 +74,13 @@ public class BattleQueryService {
     }
 
     /**
-     * 사용자의 배틀 전적 조회
+     * 사용자의 배틀 전적 조회 (N+1 최적화)
+     * Fetch Join으로 배틀 + 질문 + 답변을 한 번에 로딩
      */
     public BattleHistoryResponse getBattleHistory(String email) {
         User user = userService.findUserByEmail(email);
-        List<Battle> battles = battleRepository.findByUserOrderByCreatedAtDesc(user);
+        // Fetch Join으로 질문/답변을 한 번에 로딩
+        List<Battle> battles = battleRepository.findByUserWithQuestionsAndAnswers(user);
 
         List<BattleHistoryItem> historyItems = battles.stream()
                 .map(battleStatisticsService::calculateBattleHistoryItem)
@@ -182,10 +187,11 @@ public class BattleQueryService {
     }
 
     /**
-     * 배틀 ID와 사용자로 배틀 조회
+     * 배틀 ID와 사용자로 배틀 조회 (질문/답변 Fetch Join)
+     * 단일 쿼리로 배틀 + 질문 + 답변을 한 번에 로딩하여 N+1 방지
      */
     private Battle findBattleByIdAndUser(UUID battleId, User user) {
-        return battleRepository.findByIdAndUser(battleId, user)
+        return battleRepository.findByIdAndUserWithQuestionsAndAnswers(battleId, user)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         BattleMessage.BATTLE_NOT_FOUND_BY_ID.format(battleId)));
     }

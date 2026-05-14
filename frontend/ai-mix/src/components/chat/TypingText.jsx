@@ -1,8 +1,10 @@
 "use client";
 
+import { memo } from "react";
 import { TypeAnimation } from "react-type-animation";
 
-export default function TypingText({
+// React.memo: 텍스트가 변경되지 않으면 타이핑 애니메이션 재실행 방지
+const TypingText = memo(function TypingText({
   text = [],
   typingSpeed = 50,
   pauseDuration = 500,
@@ -32,5 +34,7 @@ export default function TypingText({
       />
     </div>
   );
-}
+});
+
+export default TypingText;
 

@@ -21,11 +21,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 공통 GPT 서비스
  * - ChatGPT API 호출 로직을 공통화
  * - 여러 패키지에서 재사용 가능
+ * - API 키별 OpenAI 클라이언트 캐싱으로 커넥션 풀 재사용
  */
 @Log4j2
 @Service
@@ -35,6 +37,13 @@ public class GptService {
     private final ChatGptProperties chatGptProperties;
     private final GptTokenUsageRecordService recordService;
     private final UserApiKeyService userApiKeyService;
+
+    /**
+     * API 키별 OpenAI 클라이언트 캐시
+     * OkHttp 클라이언트는 내부에 커넥션 풀을 가지므로 재사용 시 성능 향상
+     * ConcurrentHashMap으로 스레드 안전성 보장
+     */
+    private final ConcurrentHashMap<String, OpenAIClient> clientCache = new ConcurrentHashMap<>();
 
     /**
      * GPT API 호출 (단일 메시지)
@@ -252,18 +261,24 @@ public class GptService {
     }
 
     /**
-     * OpenAI 클라이언트 생성
-     * - API 키를 사용하여 OpenAI HTTP 클라이언트 생성
+     * OpenAI 클라이언트 조회 또는 생성 (캐싱)
+     * OkHttp 클라이언트 내부의 커넥션 풀을 재사용하여 성능 향상
+     * 동일 API 키에 대해 클라이언트를 한 번만 생성하고 이후 캐시에서 반환
      *
      * @param apiKey OpenAI API 키
-     * @return 생성된 OpenAI 클라이언트
+     * @return 캐시된 또는 새로 생성된 OpenAI 클라이언트
      * @apiNote 점검O
      * @since 2026-01-05
      */
     private OpenAIClient createOpenAIClient(String apiKey) {
-        return OpenAIOkHttpClient.builder()
-                .apiKey(apiKey)
-                .build();
+        return clientCache.computeIfAbsent(apiKey, key -> {
+            log.info("OpenAI 클라이언트 신규 생성 (이후 캐시 재사용): maskedKey={}...{}",
+                    key.substring(0, Math.min(8, key.length())),
+                    key.substring(Math.max(0, key.length() - 4)));
+            return OpenAIOkHttpClient.builder()
+                    .apiKey(key)
+                    .build();
+        });
     }
 
     /**
@@ -463,9 +478,8 @@ public class GptService {
 
     /**
      * 토큰 사용량 기록
-     * - ChatCompletion에서 usage 정보를 추출하여 기록
-     * - Reflection을 사용하여 토큰 사용량 추출 (promptTokens, completionTokens, totalTokens)
-     * - 기록 실패 시에도 API 호출 자체는 실패하지 않음
+     * SDK의 CompletionUsage 타입을 직접 사용하여 토큰 사용량을 추출 (Reflection 제거)
+     * 기록 실패 시에도 API 호출 자체는 실패하지 않음
      *
      * @param user         사용자 (null 불가)
      * @param completion   ChatCompletion 응답 객체
@@ -476,36 +490,26 @@ public class GptService {
      */
     private void recordTokenUsage(User user, ChatCompletion completion, GptUsageType usageType, boolean isUserApiKey) {
         try {
-            // ChatCompletion에서 usage 정보 추출
-            Optional<?> usageOpt = completion.usage();
-            
+            // ChatCompletion에서 usage 정보 추출 (CompletionUsage 타입)
+            Optional<com.openai.models.completions.CompletionUsage> usageOpt = completion.usage();
+
             if (usageOpt.isEmpty()) {
-                log.warn("GPT API 응답에 usage 정보가 없습니다: userId={}, type={}, completionId={}", 
+                log.warn("GPT API 응답에 usage 정보가 없습니다: userId={}, type={}, completionId={}",
                         user.getId(), usageType, completion.id());
                 return;
             }
 
-            Object usage = usageOpt.get();
-            log.debug("Usage 객체 타입: {}", usage.getClass().getName());
-            
-            // reflection을 사용하여 토큰 사용량 추출
-            GptTokenUsage tokenUsage = extractTokenUsage(usage);
-            if (tokenUsage == null) {
-                return;
-            }
-
-            Integer promptTokens = tokenUsage.getPromptTokens();
-            Integer completionTokens = tokenUsage.getCompletionTokens();
-            Integer totalTokens = tokenUsage.getTotalTokens();
+            // SDK 타입을 직접 사용하여 토큰 값 추출 (기존 Reflection 방식 제거)
+            com.openai.models.completions.CompletionUsage usage = usageOpt.get();
+            int promptTokens = (int) usage.promptTokens();
+            int completionTokens = (int) usage.completionTokens();
+            int totalTokens = (int) usage.totalTokens();
 
             // 토큰 사용량이 모두 0인 경우 경고
-            if (isAllTokensZero(promptTokens, completionTokens, totalTokens)) {
-                log.warn("토큰 사용량이 모두 0입니다: userId={}, type={}, usageClass={}", 
-                        user.getId(), usageType, usage.getClass().getName());
+            if (promptTokens == 0 && completionTokens == 0 && totalTokens == 0) {
+                log.warn("토큰 사용량이 모두 0입니다: userId={}, type={}", user.getId(), usageType);
             }
 
-            // 모델명 추출
-            completion.model();
             String model = completion.model();
 
             log.info("토큰 사용량 추출: userId={}, type={}, model={}, promptTokens={}, completionTokens={}, totalTokens={}",
@@ -513,12 +517,8 @@ public class GptService {
 
             // 토큰 사용량 기록
             recordService.recordTokenUsage(
-                    user,
-                    usageType,
-                    model,
-                    promptTokens,
-                    completionTokens,
-                    totalTokens,
+                    user, usageType, model,
+                    promptTokens, completionTokens, totalTokens,
                     isUserApiKey
             );
 
@@ -526,84 +526,10 @@ public class GptService {
                     user.getId(), usageType, totalTokens);
 
         } catch (Exception e) {
-            log.error("토큰 사용량 기록 실패: userId={}, type={}, error={}", 
+            log.error("토큰 사용량 기록 실패: userId={}, type={}, error={}",
                     user.getId(), usageType, e.getMessage(), e);
             // 토큰 사용량 기록 실패는 API 호출 자체를 실패시키지 않음
         }
-    }
-
-
-    /**
-     * Usage 객체에서 토큰 사용량 추출
-     * - Reflection을 사용하여 promptTokens, completionTokens, totalTokens 추출
-     *
-     * @param usage Usage 객체
-     * @return 토큰 사용량 정보 (추출 실패 시 null)
-     * @apiNote 점검O
-     * @since 2026-01-05
-     */
-    private GptTokenUsage extractTokenUsage(Object usage) {
-        try {
-            Integer promptTokens = extractTokenValue(usage, "promptTokens");
-            Integer completionTokens = extractTokenValue(usage, "completionTokens");
-            Integer totalTokens = extractTokenValue(usage, "totalTokens");
-
-            log.debug("토큰 사용량 추출 성공: promptTokens={}, completionTokens={}, totalTokens={}",
-                    promptTokens, completionTokens, totalTokens);
-
-            return new GptTokenUsage(promptTokens, completionTokens, totalTokens);
-
-        } catch (NoSuchMethodException e) {
-            log.error("Usage 객체에서 메서드를 찾을 수 없습니다: usageClass={}, error={}", 
-                    usage.getClass().getName(), e.getMessage());
-            // 사용 가능한 메서드 목록 로깅
-            log.error("사용 가능한 메서드: {}", 
-                    java.util.Arrays.stream(usage.getClass().getMethods())
-                            .map(java.lang.reflect.Method::getName)
-                            .collect(java.util.stream.Collectors.joining(", ")));
-            return null;
-        } catch (Exception e) {
-            log.error("토큰 사용량 추출 중 오류 발생: error={}", e.getMessage(), e);
-            return null;
-        }
-    }
-
-    /**
-     * Reflection을 사용하여 토큰 값 추출
-     *
-     * @param usage    Usage 객체
-     * @param methodName 메서드 이름 (promptTokens, completionTokens, totalTokens)
-     * @return 추출된 토큰 값 (추출 실패 시 0)
-     * @apiNote 점검O
-     * @since 2026-01-05
-     */
-    private Integer extractTokenValue(Object usage, String methodName) throws Exception {
-        java.lang.reflect.Method method = usage.getClass().getMethod(methodName);
-        Object value = method.invoke(usage);
-        
-        if (value instanceof Integer) {
-            return (Integer) value;
-        } else if (value instanceof Number) {
-            return ((Number) value).intValue();
-        } else if (value != null) {
-            log.warn("{} 타입이 예상과 다릅니다: {}", methodName, value.getClass().getName());
-        }
-        
-        return 0;
-    }
-
-    /**
-     * 모든 토큰 값이 0인지 확인
-     *
-     * @param promptTokens     프롬프트 토큰 수
-     * @param completionTokens 완료 토큰 수
-     * @param totalTokens      전체 토큰 수
-     * @return 모두 0이면 true
-     * @apiNote 점검O
-     * @since 2026-01-05
-     */
-    private boolean isAllTokensZero(Integer promptTokens, Integer completionTokens, Integer totalTokens) {
-        return promptTokens == 0 && completionTokens == 0 && totalTokens == 0;
     }
 
     /**

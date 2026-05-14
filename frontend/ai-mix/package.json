@@ -12,8 +12,7 @@
   },
   "dependencies": {
     "@xyflow/react": "^12.10.0",
-    "axios": "^1.13.2",
-    "billboard.js": "^3.17.2",
+    "axios": "1.13.5",
     "d3-force": "^3.0.0",
     "dagre": "^0.8.5",
     "elkjs": "^0.11.0",

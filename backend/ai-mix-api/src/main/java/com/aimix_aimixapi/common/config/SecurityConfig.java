@@ -15,7 +15,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Spring Security 설정 클래스
@@ -38,6 +42,9 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @Value("${app.cors.allowed-origins:}")
+    private String additionalOrigins;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -58,6 +65,8 @@ public class SecurityConfig {
                 // 요청별 인증 설정
                 .authorizeHttpRequests(auth -> auth
                         // 인증 불필요한 URL (signup, login)
+                        // Health check (Railway 배포용)
+                        .requestMatchers("/api/v1/health").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         // 정적 리소스 (업로드된 이미지 등) 인증 불필요
                         .requestMatchers("/uploads/**").permitAll()
@@ -109,7 +118,7 @@ public class SecurityConfig {
         // 다른 PC에서 접근 시: "http://{다른PC의IP주소}:5173" 형식으로 추가
         // 예: "http://192.168.1.100:5173"
         // 운영 환경에서는 환경 변수로 관리 권장
-        configuration.setAllowedOrigins(Arrays.asList(
+        List<String> origins = new ArrayList<>(Arrays.asList(
                 "http://localhost:5173",  // React 개발 서버 (Vite 기본 포트)
                 "http://127.0.0.1:5173",  // localhost 대체
                 "http://localhost:3000",   // React 개발 서버 (Create React App 기본 포트)
@@ -121,6 +130,12 @@ public class SecurityConfig {
                 "http://172.30.1.10:5173",
                 "http://172.30.1.65:5173"
         ));
+        // 환경변수로 추가 Origin 설정 (Vercel 배포 도메인 등)
+        // 예: APP_CORS_ALLOWED_ORIGINS=https://ai-mix.vercel.app,https://custom-domain.com
+        if (additionalOrigins != null && !additionalOrigins.isBlank()) {
+            origins.addAll(Arrays.asList(additionalOrigins.split(",")));
+        }
+        configuration.setAllowedOrigins(origins);
 
         // 허용할 HTTP 메서드
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));

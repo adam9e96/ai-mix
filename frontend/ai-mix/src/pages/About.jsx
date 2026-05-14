@@ -1,4 +1,4 @@
-import Logo from "@assets/aimix_logo.png";
+import Logo from "@assets/aimix_logo.webp";
 import "@styles/pages/about.css";
 
 export default function About() {

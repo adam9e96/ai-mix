@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../../hooks/useAuthContext";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/logo.webp";
 import { logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
 import "../../styles/layout/header.css";

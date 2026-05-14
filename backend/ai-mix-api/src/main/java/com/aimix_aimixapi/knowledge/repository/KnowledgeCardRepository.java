@@ -4,6 +4,7 @@ import com.aimix_aimixapi.knowledge.entity.KnowledgeCard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -189,4 +190,25 @@ public interface KnowledgeCardRepository extends JpaRepository<KnowledgeCard, Lo
      * @since 2025-12-28
      */
     List<KnowledgeCard> findTop10ByIsPublishedTrueOrderByUpvoteCountDesc();
+
+    /**
+     * 조회수 원자적 증가 (동시성 안전, lost update 방지)
+     * UPDATE 쿼리로 해당 row만 수정하여 전체 엔티티 UPDATE 방지
+     *
+     * @param cardId 카드 ID
+     * @since 2026-04-06
+     */
+    @Modifying
+    @Query("UPDATE KnowledgeCard k SET k.viewCount = k.viewCount + 1 WHERE k.id = :cardId")
+    void incrementViewCount(@Param("cardId") Long cardId);
+
+    /**
+     * 여러 카드 ID로 한 번에 조회 (N+1 방지)
+     * IN 절로 관련 카드를 단일 쿼리로 조회
+     *
+     * @param ids 카드 ID 목록
+     * @return 카드 목록
+     * @since 2026-04-06
+     */
+    List<KnowledgeCard> findAllByIdIn(List<Long> ids);
 }

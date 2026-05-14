@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import BattleModal from "../../components/battle/BattleModal";
+import { toast } from "react-toastify";
 
 export default function BattleHistory() {
   const [data, setData] = useState(null);
@@ -32,11 +33,17 @@ export default function BattleHistory() {
         const res = await axiosInstance.get("/battle/history");
         setData(res.data);
       } catch (err) {
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          toast.error("로그인이 필요합니다.");
+          navigate("/login");
+          return;
+        }
+
         console.error("배틀 전적 불러오기 실패:", err);
       }
     }
     fetchData();
-  }, []);
+  }, [navigate]);
 
   /* -----------------------------
      상대 시간 계산

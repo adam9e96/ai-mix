@@ -53,13 +53,19 @@ export default function EditProfile() {
           setAvatarPreview(getAvatarUrl(userInfo.avatarUrl));
         }
       } catch (err) {
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          toast.error("로그인이 필요합니다.");
+          navigate("/login");
+          return;
+        }
+
         console.error("회원정보 불러오기 실패:", err);
       } finally {
         setMypageLoading(false);
       }
     }
     fetchData();
-  }, [setMypageLoading]);
+  }, [setMypageLoading, navigate]);
 
   const onChange = (e) => {
     const { name, value, type, files } = e.target;

@@ -1,7 +1,7 @@
-# Runtime uploads
+# 업로드/런타임 데이터
 backend/uploads/users/avatars/
 
-# Logs
+# 로그 파일
 logs/
 *.log
 npm-debug.log*
@@ -10,29 +10,29 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Local environment files with secrets
+# 비밀 환경 파일
 .env
 .env.local
 .env.*.local
 **/.env.local
 **/.env.*.local
-.claude
-_private
-docs
-sql
 
-# Keep example environment files commit-safe
+# 예시 환경 파일은 공유 가능
 !.env.example
 !**/.env.example
 
-# Node / Vite
+# 로컬 전용 자료
+.claude
+_private
+
+# 프론트엔드 Node / Vite
 node_modules/
 frontend/ai-mix/node_modules/
 frontend/ai-mix/dist/
 frontend/ai-mix/dist-ssr/
 *.local
 
-# Gradle / Spring Boot
+# 백엔드 Gradle / Spring Boot
 backend/ai-mix-api/HELP.md
 backend/ai-mix-api/.gradle/
 backend/ai-mix-api/build/
@@ -58,12 +58,9 @@ backend/ai-mix-api/dist/
 backend/ai-mix-api/nbdist/
 backend/ai-mix-api/.nb-gradle/
 
-# IDE / OS
+# IDE / OS 로컬 설정
 .DS_Store
-.idea/
 **/.idea/
-.vscode/*
-!.vscode/extensions.json
 **/.vscode/
 *.suo
 *.ntvs*

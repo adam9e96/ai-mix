@@ -1,83 +1,113 @@
 name: ai-mix-prod
 
 services:
-  postgres:
+  aimix-postgres:
     image: postgres:latest
-    container_name: aimix-postgres
+    container_name: ai-mix-prod-postgres
+    hostname: aimix-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "5432:5432"
     volumes:
-      - aimix-pgdata:/var/lib/postgresql
+      - ai_mix_prod_pgdata:/var/lib/postgresql
       - ./docker/init-db:/docker-entrypoint-initdb.d
+    networks:
+      ai-mix-prod-net:
+        aliases:
+          - aimix-postgres
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 10
 
-  redis:
+  aimix-redis:
     image: redis:latest
-    container_name: aimix-redis
-    ports:
-      - "6379:6379"
+    container_name: ai-mix-prod-redis
+    hostname: aimix-redis
+    restart: unless-stopped
     volumes:
-      - aimix-redis-data:/data
+      - ai_mix_prod_redis_data:/data
+    networks:
+      ai-mix-prod-net:
+        aliases:
+          - aimix-redis
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 10
 
-  backend:
+  aimix-backend:
     build:
       context: ./backend/ai-mix-api
       dockerfile: Dockerfile
-    container_name: aimix-backend
+    container_name: ai-mix-prod-backend
+    hostname: aimix-backend
+    restart: unless-stopped
     depends_on:
-      postgres:
+      aimix-postgres:
         condition: service_healthy
-      redis:
+      aimix-redis:
         condition: service_healthy
-    ports:
-      - "${BACKEND_PORT:-8081}:8081"
     environment:
       SPRING_PROFILES_ACTIVE: prod
       PORT: 8081
-      PGHOST: postgres
+      PGHOST: aimix-postgres
       PGPORT: 5432
       PGDATABASE: ${POSTGRES_DB}
       PGUSER: ${POSTGRES_USER}
       PGPASSWORD: ${POSTGRES_PASSWORD}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://aimix-redis:6379
       AIMIX_UPLOAD_DIR: /app/uploads
       AIMIX_JWT_SECRET_KEY: ${AIMIX_JWT_SECRET_KEY}
       AIMIX_JWT_ISSUER: ${AIMIX_JWT_ISSUER}
       AIMIX_JWT_ACCESS_EXPIRE: ${AIMIX_JWT_ACCESS_EXPIRE:-3600000}
       AIMIX_JWT_REFRESH_EXPIRE: ${AIMIX_JWT_REFRESH_EXPIRE:-604800000}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost:8080,http://localhost:8082}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost:28080,https://ai-mix.adam9e96.dev}
       AI_MIX_GMAIL_APP_PASSWORD: ${AI_MIX_GMAIL_APP_PASSWORD}
       API_KEY_ENCRYPTION_KEY: ${API_KEY_ENCRYPTION_KEY}
       API_KEY_ENCRYPTION_SALT: ${API_KEY_ENCRYPTION_SALT}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
     volumes:
-      - aimix-uploads:/app/uploads
+      - ai_mix_prod_uploads:/app/uploads
+    networks:
+      ai-mix-prod-net:
+        aliases:
+          - aimix-backend
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8081/api/v1/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 20s
 
-  nginx:
+  aimix-nginx:
     build:
       context: ./frontend/ai-mix
       dockerfile: Dockerfile
-    container_name: aimix-nginx
+    container_name: ai-mix-prod-nginx
+    hostname: aimix-nginx
+    restart: unless-stopped
     depends_on:
-      backend:
-        condition: service_started
+      aimix-backend:
+        condition: service_healthy
     ports:
-      - "${NGINX_PORT:-8082}:80"
+      - "${NGINX_PORT:-28080}:80"
+    volumes:
+      - ai_mix_prod_uploads:/app/uploads:ro
+    networks:
+      ai-mix-prod-net:
+        aliases:
+          - aimix-nginx
+
+networks:
+  ai-mix-prod-net:
+    driver: bridge
 
 volumes:
-  aimix-pgdata:
-  aimix-redis-data:
-  aimix-uploads:
+  ai_mix_prod_pgdata:
+  ai_mix_prod_redis_data:
+  ai_mix_prod_uploads:

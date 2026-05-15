@@ -20,7 +20,7 @@ spring:
   # Redis는 캐싱, 세션 저장, 실시간 데이터 저장 등에 사용
   data:
     redis:
-      host: localhost # WSL2 Redis 호스트 주소
+      host: localhost # 로컬 개발 Redis 호스트 주소
       port: 6379 # Redis 기본 포트
       password: # 패스워드는 없으므로 비워두기
   # 이메일 설정 (Gmail SMTP)

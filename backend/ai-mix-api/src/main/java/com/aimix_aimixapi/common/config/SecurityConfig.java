@@ -65,7 +65,7 @@ public class SecurityConfig {
                 // 요청별 인증 설정
                 .authorizeHttpRequests(auth -> auth
                         // 인증 불필요한 URL (signup, login)
-                        // Health check (Railway 배포용)
+                        // Health check (Docker Compose / VM 배포용)
                         .requestMatchers("/api/v1/health").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         // 정적 리소스 (업로드된 이미지 등) 인증 불필요
@@ -130,8 +130,8 @@ public class SecurityConfig {
                 "http://172.30.1.10:5173",
                 "http://172.30.1.65:5173"
         ));
-        // 환경변수로 추가 Origin 설정 (Vercel 배포 도메인 등)
-        // 예: APP_CORS_ALLOWED_ORIGINS=https://ai-mix.vercel.app,https://custom-domain.com
+        // 환경변수로 추가 Origin 설정 (Cloudflare Tunnel / VM 배포 도메인 등)
+        // 예: CORS_ALLOWED_ORIGINS=https://ai-mix.adam9e96.dev,https://custom-domain.com
         if (additionalOrigins != null && !additionalOrigins.isBlank()) {
             origins.addAll(Arrays.asList(additionalOrigins.split(",")));
         }

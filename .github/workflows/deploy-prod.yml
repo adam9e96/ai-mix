@@ -44,18 +44,23 @@ jobs:
           script_stop: true
           script: |
             set -e
-            cd ~/apps/ai-mix
-            git pull origin main
-            docker compose up -d --build
-            docker compose ps
+            cd /srv/docker/ai-mix
+            git fetch origin main
+            git checkout main
+            git pull --ff-only origin main
+            test -f .env
+            docker network inspect web > /dev/null
+            docker compose -f docker-compose.prod.yml up -d --build
+            docker compose -f docker-compose.prod.yml ps
             for i in $(seq 1 20); do
-              if curl --fail --silent http://localhost:28080/api/v1/health > /dev/null; then
+              if docker exec portfolio-proxy-nginx wget --quiet --output-document=- http://aimix-nginx/api/v1/health > /dev/null; then
                 break
               fi
               if [ "$i" -eq 20 ]; then
                 echo "AI-MIX health check did not become ready in time"
-                docker compose logs --tail=200 aimix-backend aimix-nginx
+                docker compose -f docker-compose.prod.yml logs --tail=200 aimix-backend aimix-nginx
                 exit 1
               fi
               sleep 3
             done
+            curl --fail --silent https://ai-mix.adam9e96.dev/api/v1/health > /dev/null

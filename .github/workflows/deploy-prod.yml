@@ -47,6 +47,7 @@ jobs:
             cd /srv/docker/ai-mix
             git fetch origin main
             git checkout main
+            git restore --staged --worktree -- docker-compose.yml
             git pull --ff-only origin main
             test -f .env
             docker network inspect web > /dev/null

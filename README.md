@@ -1,107 +1,293 @@
 # AI-MIX
 
-**AI 기반 지식 공유 및 대결 플랫폼**
+**OpenAI API 기반 학습·지식 공유 플랫폼**
 
-## 📖 프로젝트 소개
+[Live Demo](https://ai-mix.adam9e96.dev/) | [Portfolio](https://www.notion.so/adam9e96/AI-MIX-34a9b563794081f88605eee8eeafa2d8)
 
-**AI-MIX**는 AI와의 상호작용을 통해 지식을 습득하고, 이를 바탕으로 다른 사용자와 경쟁하며 성장하는 **학습 플랫폼**입니다.
+## 프로젝트 소개
 
-사용자는 OpenAI를 이용한 AI 챗봇과 실시간으로 대화하며 궁금증을 해결하고, 획득한 지식을 **지식 카드(Knowledge Card)** 형태로 저장하여 자신만의 위키를 구축할 수 있습니다.
+AI-MIX는 AI 채팅으로 학습한 내용을 지식 카드로 정리하고, Q&A와 퀴즈 배틀을 통해 이해도를 점검할 수 있는 학습 플랫폼입니다.
 
-더 나아가 **배틀 모드(Battle Mode)** 를 통해 실시간 퀴즈 대결을 펼치며 학습 동기를 부여 받을 수 있습니다.
+OpenAI API 연동에 그치지 않고 채팅 문맥 관리, JWT 인증, 사용자별 API Key 암호화, 토큰 사용량 집계, 지식 카드와 Q&A 데이터 모델링, Docker Compose 기반 배포까지 하나의 서비스 흐름으로 구현했습니다.
 
-### 🎯 기획 의도
+## 프로젝트 정보
 
-기존의 정적인 학습 방식에서 벗어나, AI를 활용한 **능동적인 지식 탐구**와 **경쟁 요소**를 결합하여 학습의 재미와 효율성을 극대화하고자 기획되었습니다.
+| 항목 | 내용 |
+| --- | --- |
+| 개발 기간 | 2025.12.03 ~ 2026.01.02 |
+| 팀 구성 | 2인 팀 프로젝트 |
+| 담당 역할 | 백엔드 API, 인증, OpenAI 연동, DB·Redis 설계, 배포 환경 구성 |
+| 배포 주소 | [https://ai-mix.adam9e96.dev/](https://ai-mix.adam9e96.dev/) |
+| GitHub | [https://github.com/adam9e96/ai-mix](https://github.com/adam9e96/ai-mix) |
 
----
+### 담당 범위
+
+- Spring Boot 기반 REST API와 도메인 로직 구현
+- JWT·Refresh Token 인증 및 Redis 기반 이메일 인증 구현
+- OpenAI Java SDK 연동과 사용자별 API Key 암호화 저장
+- AI 채팅, 퀴즈 배틀, 지식 카드, Q&A API 구현
+- PostgreSQL 데이터 모델과 Redis 임시 데이터 구조 설계
+- Docker Compose, Nginx, GitHub Actions 기반 배포 환경 구성
+
+### 검증 가능한 구현 수치
+
+실제 사용량을 추정하지 않고 저장소에서 다시 확인할 수 있는 구현 수치만 정리했습니다.
+
+| 항목 | 수치 |
+| --- | ---: |
+| 백엔드 API 핸들러 | 74개 |
+| JPA 엔티티 | 18개 |
+| 백엔드 테스트 | 2개 |
+| 운영 컨테이너 | 4개 |
+| 주요 도메인 | 인증, 채팅, 배틀, 지식 카드, Q&A, 사용자, 토큰 사용량 |
 
 ## 주요 기능
 
-### 1. AI 챗봇 (AI Chatbot)
+### 1. AI 채팅
 
-- **실시간 문맥 인식 대화**: OpenAI API를 활용하여 사용자의 질문 의도를 파악하고 정확한 답변을 제공합니다.
-- **스트리밍 답변**: SSE(Server-Sent Events)와 유사한 경험을 제공하여 AI의 답변을 자연스럽게 전달합니다.
-- **이어서 대화**: 사용자가 이어서 질문을 할 수 있도록 이전 대화를 유지하면서 맥락을 유지한채로 대화할 수 있습니다.
+- OpenAI API를 이용한 질문·답변과 세션별 대화 기록 관리
+- 이전 메시지를 활용한 후속 질문 문맥 유지
+- 완성된 응답을 프론트엔드 타이핑 애니메이션으로 순차 표시
+- 사용자별 OpenAI API Key 등록과 토큰 사용량 집계
 
-### 2. 배틀 모드 (Battle Mode)
+### 2. 퀴즈 배틀
 
-- **실시간 퀴즈 대결**: 대화 내용을 기반으로 적절한 퀴즈를 생성하여 실시간으로 대결을 진행할 수 있습니다.
-- **점수 시스템**: 정답 여부와 소요 시간을 기반으로 점수를 산정하여 경쟁의 묘미를 살렸습니다.
+- 학습 내용과 Q&A 데이터를 기반으로 GPT 퀴즈 생성
+- 객관식·주관식 문제와 난이도별 평가
+- 정답 여부와 풀이 시간을 반영한 점수 계산
+- 배틀 결과와 사용자별 기록 조회
 
-### 3. 지식 카드 & 위키 (Knowledge Wiki)
+### 3. 지식 카드
 
-- **지식 자산화**: 학습한 내용을 카드 형태로 저장하고 관리할 수 있습니다.
-- **시각화**: React Flow를 활용하여 지식 간의 연결 관계를 시각적으로 탐색할 수 있습니다.
+- 채팅과 Q&A 내용을 지식 카드로 변환
+- 관련 개념과 출처를 포함한 카드 관리
+- React Flow 기반 지식 관계 시각화
+- 좋아요와 기여 내역 관리
 
 ### 4. Q&A 커뮤니티
 
-- **집단지성**: AI가 해결하지 못한 심화 질문을 커뮤니티에 공유하여 다각적인 답변을 얻을 수 있습니다.
-- **마크다운 에디터**: 코드 블록, 이미지 등을 포함한 풍부한 텍스트 작성을 지원합니다.
+- 질문·답변 작성, 수정, 삭제와 답변 채택
+- 태그 생성, 검색, 투표 기능
+- React Flow 기반 질문 관계 그래프
+- 마크다운과 코드 블록 표시
 
----
+### 5. 인증과 사용자 관리
 
-## 기술 스택 (Tech Stack)
+- Spring Security 기반 JWT 인증·인가
+- Refresh Token을 HttpOnly 쿠키로 관리
+- Redis TTL 기반 이메일 인증
+- 사용자 프로필, 아바타, API Key 관리
 
-### Frontend
-
-| Category          | Technology                                                                                                            | Description                                      |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| **Core**          | ![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black)                   | 최신 React 기능을 활용한 컴포넌트 기반 UI 개발   |
-| **Build**         | ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)                         | 빠르고 가벼운 개발 환경 및 빌드 최적화           |
-| **State**         | ![Zustand](https://img.shields.io/badge/Zustand-orange?style=flat-square)                                             | 직관적이고 경량화된 전역 상태 관리               |
-| **Routing**       | ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=flat-square&logo=react-router&logoColor=white) | SPA(Single Page Application) 라우팅 처리         |
-| **UI/UX**         | ![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)     | 부드러운 화면 전환 및 인터랙티브 애니메이션 구현 |
-| **Visualization** | ![React Flow](https://img.shields.io/badge/React_Flow-FF0072?style=flat-square)                                       | 지식 노드 관계 시각화                            |
+## 기술 스택
 
 ### Backend
 
-| Category      | Technology                                                                                                                    | Description                                     |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| **Framework** | ![Spring Boot](https://img.shields.io/badge/Spring_Boot_3.5.9-6DB33F?style=flat-square&logo=springboot&logoColor=white)       | 안정적이고 확장 가능한 RESTful API 서버 구축    |
-| **Language**  | ![Java](https://img.shields.io/badge/Java_21-007396?style=flat-square&logo=openjdk&logoColor=white)                           | 최신 Java 기능을 활용한 고성능 백엔드 로직 구현 |
-| **Data**      | ![JPA](https://img.shields.io/badge/Spring_Data_JPA-6DB33F?style=flat-square&logo=spring&logoColor=white)                     | 객체 지향적인 데이터베이스 조작 및 ORM          |
-| **Security**  | ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=flat-square&logo=springsecurity&logoColor=white) | JWT 기반의 견고한 인증/인가 시스템              |
-| **AI**        | ![OpenAI](https://img.shields.io/badge/OpenAI_Java_SDK-412991?style=flat-square&logo=openai&logoColor=white)                  | GPT 모델 연동을 위한 공식 SDK 활용              |
-| **Utils**     | ![MapStruct](https://img.shields.io/badge/MapStruct-transparent?style=flat-square)                                            | 효율적인 DTO <-> Entity 매핑 처리               |
+`Java 21` `Spring Boot 3.5.9` `Spring Security` `Spring Data JPA` `MapStruct` `OpenAI Java SDK` `JJWT`
 
-### Infrastructure & Database
+### Frontend
 
-| Category     | Technology                                                                                                      | Description                                 |
-| ------------ | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white) | 신뢰성 높은 관계형 데이터베이스             |
-| **Cache**    | ![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)                | 세션 관리 및 데이터 캐싱을 통한 성능 최적화 |
+`React 19` `Vite` `Zustand` `Axios` `React Router` `React Flow` `Recharts` `Framer Motion`
 
----
+### Database & Infrastructure
 
-## 🚀 시작하기
+`PostgreSQL` `Redis` `Docker Compose` `Nginx` `GitHub Actions` `Cloudflare Tunnel`
 
-### 사전 요구사항 (Prerequisites)
+## 주요 개발 이슈
 
-- **Java 21** 이상
-- **Node.js 18** 이상
-- **PostgreSQL 12** 이상
-- **Redis 6** 이상
-- **OpenAI API Key**
+### 1. 채팅 문맥과 OpenAI 요청 관리
 
-### 설치 및 실행
+채팅 세션과 메시지를 분리해 대화 이력을 저장하고, 후속 질문 시 이전 메시지를 함께 구성해 OpenAI API에 전달했습니다. 사용자 API Key와 공용 API Key 사용을 구분하고 요청별 토큰 사용량을 기록하도록 구성했습니다.
 
-1. **Repository Clone**
+### 2. 사용자 API Key 보호
+
+사용자가 등록한 OpenAI API Key를 평문으로 저장하지 않도록 암호화 계층을 분리했습니다. API Key 암호화에 필요한 Key와 Salt는 환경변수로 주입하고 응답에서는 원문을 노출하지 않도록 구성했습니다.
+
+### 3. 인증 상태와 임시 데이터 분리
+
+사용자와 서비스 데이터는 PostgreSQL에 저장하고, 만료가 필요한 이메일 인증 데이터와 그래프 위치 데이터는 Redis로 분리했습니다. Access Token과 Refresh Token의 역할을 나누고 Refresh Token은 HttpOnly 쿠키로 전달했습니다.
+
+### 4. 복합 학습 도메인 분리
+
+채팅, 배틀, 지식 카드, Q&A가 서로 참조하면서도 개별적으로 변경될 수 있도록 패키지와 서비스를 도메인별로 나눴습니다. 배틀 조회·명령·평가 로직과 Q&A 검색·권한·투표 로직을 역할별 서비스로 분리했습니다.
+
+### 5. 셀프 호스팅 배포
+
+Ubuntu VM에서 Nginx, Spring Boot, PostgreSQL, Redis를 Docker Compose로 통합 운영했습니다. 공용 Nginx와 Cloudflare Tunnel을 통해 애플리케이션 컨테이너의 호스트 포트 직접 노출을 줄였습니다.
+
+## 시작하기
+
+### 사전 요구사항
+
+- Java 21
+- Node.js 18 이상
+- Docker와 Docker Compose
+- OpenAI API Key
+
+### 환경변수 설정
+
+루트의 `.env.example`을 복사해 `.env`를 만들고 실제 값을 입력합니다.
+
+```bash
+cp .env.example .env
+```
+
+주요 환경변수:
+
+```text
+POSTGRES_DB
+POSTGRES_USER
+POSTGRES_PASSWORD
+AIMIX_JWT_SECRET_KEY
+AIMIX_JWT_ISSUER
+AI_MIX_GMAIL_APP_PASSWORD
+API_KEY_ENCRYPTION_KEY
+API_KEY_ENCRYPTION_SALT
+OPENAI_API_KEY
+```
+
+실제 비밀값이 포함된 `.env` 파일은 저장소에 커밋하지 않습니다.
+
+### 로컬 개발 실행
+
+1. Backend
 
    ```bash
-   git clone https://github.com/your-username/ai-mix.git
-   ```
-
-2. **Backend Setup**
-
-   ```bash
-   cd backend
+   cd backend/ai-mix-api
    ./gradlew bootRun
    ```
 
-3. **Frontend Setup**
+2. Frontend
+
    ```bash
-   cd frontend
+   cd frontend/ai-mix
    npm install
    npm run dev
    ```
+
+### Docker Compose 실행
+
+```bash
+docker compose up -d --build
+```
+
+기본 `.env.example` 기준 진입 주소는 `http://localhost:28080`입니다.
+
+실행 구성:
+
+- `ai-mix-prod-nginx`
+- `ai-mix-prod-backend`
+- `ai-mix-prod-postgres`
+- `ai-mix-prod-redis`
+
+## 운영 배포
+
+### 배포 환경
+
+- Domain: `https://ai-mix.adam9e96.dev`
+- Server: `portfolio-server`
+- Deploy path: `/srv/docker/ai-mix`
+- Public access: Cloudflare Tunnel
+- Reverse proxy: `/srv/docker/proxy` 공통 Nginx
+- App runtime: Docker Compose
+
+### 운영 구조
+
+```text
+Cloudflare Tunnel
+  ai-mix.adam9e96.dev
+    -> portfolio-proxy-nginx
+      -> web Docker network
+        -> aimix-nginx
+          -> React static files
+          -> aimix-backend
+          -> uploads volume
+
+aimix-backend
+  -> aimix-postgres
+  -> aimix-redis
+  -> OpenAI API
+```
+
+운영 서버에서는 `docker-compose.prod.yml`을 사용합니다. `aimix-nginx`는 호스트 포트를 공개하지 않고 외부 `web` Docker 네트워크를 통해 공용 Nginx와 연결됩니다.
+
+```bash
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+### GitHub Actions 배포
+
+`.github/workflows/deploy-prod.yml`은 `main` 브랜치 push 또는 수동 실행 시 동작합니다.
+
+```text
+test-backend
+  -> Gradle test
+deploy
+  -> SSH 접속
+  -> /srv/docker/ai-mix 에서 main pull
+  -> docker-compose.prod.yml 기준 재빌드·재기동
+  -> 내부 health check
+  -> 외부 health check
+```
+
+필요한 GitHub Actions Secrets:
+
+```text
+VM_HOST
+VM_PORT
+VM_USER
+VM_SSH_KEY
+```
+
+### 배포 검증
+
+2026-05-16 기준 GitHub Actions 배포 성공을 확인했습니다.
+
+- `test-backend`: `BUILD SUCCESSFUL`
+- `deploy`: `Successfully executed commands to all hosts`
+- `ai-mix-prod-postgres`: healthy
+- `ai-mix-prod-redis`: healthy
+- `ai-mix-prod-backend`: healthy
+- `ai-mix-prod-nginx`: running
+
+```bash
+curl https://ai-mix.adam9e96.dev/api/v1/health
+```
+
+기대 응답:
+
+```json
+{"status":"ok"}
+```
+
+## 품질 확인
+
+### Frontend
+
+```bash
+cd frontend/ai-mix
+npm run lint
+npm run build
+```
+
+### Backend
+
+```bash
+cd backend/ai-mix-api
+./gradlew test
+```
+
+현재 백엔드 자동화 테스트는 애플리케이션 컨텍스트 중심으로 제한적입니다. 인증, 배틀 평가, Q&A 권한 검증에 대한 단위·통합 테스트 보강이 필요합니다.
+
+### 수치 검증
+
+```powershell
+(rg -n "@(Get|Post|Put|Delete|Patch)Mapping" backend/ai-mix-api/src/main/java | Measure-Object).Count
+(rg -n "@Entity" backend/ai-mix-api/src/main/java | Measure-Object).Count
+(rg -n "@Test" backend/ai-mix-api/src/test/java | Measure-Object).Count
+```
+
+## Contact
+
+- Developer: adam9e96
+- Email: `adam9e96@gmail.com`
+- GitHub: [https://github.com/adam9e96/ai-mix](https://github.com/adam9e96/ai-mix)

@@ -42,14 +42,13 @@ public class BattleQueryService {
     private final BattleProperties battleProperties;
 
     /**
-     * 사용자의 배틀 목록 조회 (N+1 최적화)
-     * Fetch Join으로 배틀 + 질문 + 답변을 한 번에 로딩하여
-     * 기존 배틀 N개당 2N번의 LAZY 로딩 쿼리를 제거
+     * 사용자의 배틀 목록 조회
+     * Battle + 질문은 fetch join으로 로딩하고, 답변은 통계 계산 시 별도 조회합니다.
      */
     public BattleListResponse getBattleList(String email) {
         User user = userService.findUserByEmail(email);
-        // Fetch Join으로 질문/답변을 한 번에 로딩
-        List<Battle> battles = battleRepository.findByUserWithQuestionsAndAnswers(user);
+        // 두 개 이상의 List 컬렉션은 동시에 fetch join 할 수 없어 질문만 함께 로딩합니다.
+        List<Battle> battles = battleRepository.findByUserWithQuestions(user);
 
         List<BattleListItem> battleItems = battles.stream()
                 .map(battle -> {
@@ -74,13 +73,13 @@ public class BattleQueryService {
     }
 
     /**
-     * 사용자의 배틀 전적 조회 (N+1 최적화)
-     * Fetch Join으로 배틀 + 질문 + 답변을 한 번에 로딩
+     * 사용자의 배틀 전적 조회
+     * Battle + 질문은 fetch join으로 로딩하고, 답변은 통계 계산 시 별도 조회합니다.
      */
     public BattleHistoryResponse getBattleHistory(String email) {
         User user = userService.findUserByEmail(email);
-        // Fetch Join으로 질문/답변을 한 번에 로딩
-        List<Battle> battles = battleRepository.findByUserWithQuestionsAndAnswers(user);
+        // 두 개 이상의 List 컬렉션은 동시에 fetch join 할 수 없어 질문만 함께 로딩합니다.
+        List<Battle> battles = battleRepository.findByUserWithQuestions(user);
 
         List<BattleHistoryItem> historyItems = battles.stream()
                 .map(battleStatisticsService::calculateBattleHistoryItem)
@@ -187,11 +186,11 @@ public class BattleQueryService {
     }
 
     /**
-     * 배틀 ID와 사용자로 배틀 조회 (질문/답변 Fetch Join)
-     * 단일 쿼리로 배틀 + 질문 + 답변을 한 번에 로딩하여 N+1 방지
+     * 배틀 ID와 사용자로 배틀 조회 (질문 Fetch Join)
+     * 답변 컬렉션은 동일 트랜잭션 안에서 lazy loading합니다.
      */
     private Battle findBattleByIdAndUser(UUID battleId, User user) {
-        return battleRepository.findByIdAndUserWithQuestionsAndAnswers(battleId, user)
+        return battleRepository.findByIdAndUserWithQuestions(battleId, user)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         BattleMessage.BATTLE_NOT_FOUND_BY_ID.format(battleId)));
     }

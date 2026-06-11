@@ -82,8 +82,8 @@ jwt:
 # 쿠키 설정 (프로덕션: HTTPS 전용)
 app:
   cookie:
-    secure: true
-    same-site: None
+    secure: ${APP_COOKIE_SECURE:true}
+    same-site: ${APP_COOKIE_SAME_SITE:None}
 
 # CORS 설정 (Cloudflare Tunnel / VM 배포 도메인)
 # 쉼표로 구분하여 여러 도메인 추가 가능

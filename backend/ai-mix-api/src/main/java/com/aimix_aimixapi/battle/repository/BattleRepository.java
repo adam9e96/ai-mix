@@ -26,34 +26,33 @@ public interface BattleRepository extends JpaRepository<Battle, UUID> {
     List<Battle> findByUserOrderByCreatedAtDesc(User user);
 
     /**
-     * 사용자의 모든 배틀을 질문/답변과 함께 조회 (N+1 방지)
-     * Fetch Join으로 배틀 + 질문 + 답변을 한 번의 쿼리로 로딩
-     * DISTINCT로 카테시안 곱 중복 제거
+     * 사용자의 모든 배틀을 질문과 함께 조회 (N+1 방지)
+     * Hibernate는 두 개 이상의 List 컬렉션을 동시에 fetch join 할 수 없으므로
+     * 답변은 BattleAnswerRepository에서 별도로 조회합니다.
      *
      * @param user 사용자 엔티티
-     * @return 해당 사용자의 모든 배틀 목록 (질문/답변 포함, 생성일 내림차순)
+     * @return 해당 사용자의 모든 배틀 목록 (질문 포함, 생성일 내림차순)
      * @since 2026-04-06
      */
     @Query("SELECT DISTINCT b FROM Battle b " +
             "LEFT JOIN FETCH b.questions " +
-            "LEFT JOIN FETCH b.answers " +
             "WHERE b.user = :user " +
             "ORDER BY b.createdAt DESC")
-    List<Battle> findByUserWithQuestionsAndAnswers(@Param("user") User user);
+    List<Battle> findByUserWithQuestions(@Param("user") User user);
 
     /**
-     * 배틀 ID와 사용자로 배틀을 질문/답변과 함께 조회 (N+1 방지)
+     * 배틀 ID와 사용자로 배틀을 질문과 함께 조회 (N+1 방지)
+     * 답변 컬렉션은 동일 트랜잭션 안에서 lazy loading 하거나 별도 Repository로 조회합니다.
      *
      * @param battleId 배틀 ID
      * @param user 사용자 엔티티
-     * @return 해당 배틀 (질문/답변 포함, 사용자가 소유한 경우에만)
+     * @return 해당 배틀 (질문 포함, 사용자가 소유한 경우에만)
      * @since 2026-04-06
      */
     @Query("SELECT b FROM Battle b " +
             "LEFT JOIN FETCH b.questions " +
-            "LEFT JOIN FETCH b.answers " +
             "WHERE b.id = :battleId AND b.user = :user")
-    Optional<Battle> findByIdAndUserWithQuestionsAndAnswers(
+    Optional<Battle> findByIdAndUserWithQuestions(
             @Param("battleId") UUID battleId, @Param("user") User user);
 
     /**

@@ -238,53 +238,6 @@ VM_USER
 VM_SSH_KEY
 ```
 
-### 배포 검증
-
-2026-05-16 기준 GitHub Actions 배포 성공을 확인했습니다.
-
-- `test-backend`: `BUILD SUCCESSFUL`
-- `deploy`: `Successfully executed commands to all hosts`
-- `ai-mix-prod-postgres`: healthy
-- `ai-mix-prod-redis`: healthy
-- `ai-mix-prod-backend`: healthy
-- `ai-mix-prod-nginx`: running
-
-```bash
-curl https://ai-mix.adam9e96.dev/api/v1/health
-```
-
-기대 응답:
-
-```json
-{"status":"ok"}
-```
-
-## 품질 확인
-
-### Frontend
-
-```bash
-cd frontend/ai-mix
-npm run lint
-npm run build
-```
-
-### Backend
-
-```bash
-cd backend/ai-mix-api
-./gradlew test
-```
-
-현재 백엔드 자동화 테스트는 애플리케이션 컨텍스트 중심으로 제한적입니다. 인증, 배틀 평가, Q&A 권한 검증에 대한 단위·통합 테스트 보강이 필요합니다.
-
-### 수치 검증
-
-```powershell
-(rg -n "@(Get|Post|Put|Delete|Patch)Mapping" backend/ai-mix-api/src/main/java | Measure-Object).Count
-(rg -n "@Entity" backend/ai-mix-api/src/main/java | Measure-Object).Count
-(rg -n "@Test" backend/ai-mix-api/src/test/java | Measure-Object).Count
-```
 
 ## Contact
 
